@@ -1,0 +1,20 @@
+{
+  "name": "wodensdag",
+  "version": "0.2.0",
+  "description": "Yesterday's shows.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "http://github.com/dlq/wodensdag",
+  "keywords": [
+    "Electron",
+    "TV",
+    "torrent"
+  ],
+  "author": "Darcy Quesnel",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  }
+}
