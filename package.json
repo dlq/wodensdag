@@ -8,13 +8,13 @@
   },
   "repository": "http://github.com/dlq/wodensdag",
   "keywords": [
-    "Electron",
     "TV",
-    "torrent"
+    "torrent",
+    "electron"
   ],
   "author": "Darcy Quesnel",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^2.0.8"
   }
 }
