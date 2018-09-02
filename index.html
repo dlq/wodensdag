@@ -3,15 +3,24 @@
   <head>
     <meta charset="UTF-8">
     <title>wodensdag</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+
+    <div class="card-group" id="showlist"></div>
+
+    <template id="showcard">
+      <div class="card">
+        <img class="card-img" src="">
+        <div class="card-body">
+          <h5 class="card-title"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </template>
 
     <script>
-      require('./renderer.js')
+      require('./renderer.js');
     </script>
   </body>
 </html>
