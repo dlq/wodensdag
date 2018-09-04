@@ -1,10 +1,10 @@
 // required by index.html
 
-function getSchedule (date, callback) {
+function getSchedule (country, date, callback) {
   const baseURL = 'http://api.tvmaze.com'
   var moment = require('moment')
   const dateStr = moment(date).format('YYYY-MM-DD')
-  let scheduleURL = `${baseURL}/schedule?country=US&date=${dateStr}`
+  let scheduleURL = `${baseURL}/schedule?country=${country}&date=${dateStr}`
 
   var request = require('request')
 
@@ -26,7 +26,8 @@ function getSchedule (date, callback) {
                 site: e.show.officialSite,
                 imdb: e.show.externals.imdb,
                 image: e.show.image ? e.show.image.medium : null,
-                description: e.show.summary
+                description: e.show.summary,
+                tags: e.show.genres
               }
             })
             .sort((a, b) => {
@@ -81,14 +82,21 @@ const day = 24 * 60 * 60 * 1000
 
 // entry point
 
-getSchedule(new Date(Date.now() - 1 * day), schedule => {
-  var sc = document.querySelector('#showcard')
-  var sl = document.querySelector('#showlist')
+getSchedule('US', new Date(Date.now() - 1 * day), schedule => {
+  var showList = document.querySelector('#show-list')
+  var showCard = document.querySelector('template#show-card')
   schedule.forEach(show => {
-    var clone = document.importNode(sc.content, true)
-    clone.querySelector('img')['src'] = show.image
-    clone.querySelector('h5').textContent = show.showName
-    clone.querySelector('p').textContent = `${getSEName(show)} ${show.episodeName} ${resolution}`
-    sl.appendChild(clone)
+    var showClone = document.importNode(showCard.content, true)
+    showClone.querySelector('#show-img')['src'] = show.image
+    showClone.querySelector('#show-name').textContent = show.showName
+    showClone.querySelector('#episode').textContent = `${getSEName(show)}`
+    showClone.querySelector('#episode-name').textContent = `${show.episodeName}`
+    var showTags = document.querySelector("template#show-tags")
+    show.tags.forEach(tag => {
+      var tagClone = document.importNode(showTags.content, true)
+      tagClone.querySelector('#show-tag').textContent = `${tag}`
+      showClone.querySelector('#show-footer').appendChild(tagClone)
+    })
+    showList.appendChild(showClone)
   })
 })

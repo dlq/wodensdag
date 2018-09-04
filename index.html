@@ -7,20 +7,34 @@
   </head>
   <body>
 
-    <div class="card-group" id="showlist"></div>
+    <div id="show-list" class="card-deck m-2">
+    </div>
 
-    <template id="showcard">
-      <div class="card">
-        <img class="card-img" src="">
+    <template id="show-card">
+      <div class="card text-white bg-dark mb-4" style="min-width: 200px; max-width: 200px;">
+        <img id="show-img" class="card-img-top" src="">
         <div class="card-body">
-          <h5 class="card-title"></h5>
-          <p class="card-text"></p>
+          <h5 id ="show-name" class="card-title"></h5>
+          <h6 class="card-subtitle text-muted">
+            <span id="episode"></span>
+            <br/>
+            <em id="episode-name"></em>
+          </h6>
         </div>
+        <div id ="show-footer" class="card-footer"></div>
       </div>
     </template>
 
-    <script>
-      require('./renderer.js');
-    </script>
+    <template id="show-tags">
+      <small class="text-muted">
+        <span id="show-tag" class="badge badge-light"></span>
+      </small>
+    </template>
+
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="node_modules/popper.js/dist/umd/popper.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script>require('./renderer.js');</script>
   </body>
 </html>
