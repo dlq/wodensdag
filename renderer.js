@@ -33,10 +33,12 @@ function getSchedule (date, callback) {
 
 function getShow (name) {
   const torrentSearch = require('torrent-search-api')
-  torrentSearch.enablePublicProviders()
+  torrentSearch.enableProvider('Rarbg')
 
-  torrentSearch.search(name, 'All')
+  console.log(name)
+  torrentSearch.search(name, 'TV', 1)
     .then(torrents => {
+      console.log(torrents)
       const opn = require('opn')
       // TODO: Search for magnet link?
       if (torrents[0] && torrents[0].magnet) {
@@ -61,7 +63,7 @@ const day = 24 * 60 * 60 * 1000
 
 // entry point
 
-getSchedule(new Date(Date.now() - 1 * day), schedule => {
+getSchedule(new Date(Date.now() - 2 * day), schedule => {
   var showList = document.querySelector('#show-list')
   var showCard = document.querySelector('template#show-card')
   schedule.forEach(s => {
