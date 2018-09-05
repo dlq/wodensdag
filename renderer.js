@@ -1,6 +1,6 @@
 // required by index.html
 
-function getSchedule(country, date, callback) {
+function getSchedule(date, callback) {
   const baseURL = 'http://api.tvmaze.com'
 
   var moment = require('moment')
@@ -64,7 +64,7 @@ const day = 24 * 60 * 60 * 1000
 
 // entry point
 
-getSchedule('US', new Date(Date.now() - 1 * day), schedule => {
+getSchedule(new Date(Date.now() - 1 * day), schedule => {
   var showList = document.querySelector('#show-list')
   var showCard = document.querySelector('template#show-card')
   schedule.forEach(s => {
