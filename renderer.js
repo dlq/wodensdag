@@ -35,10 +35,8 @@ function getShow (name) {
   const torrentSearch = require('torrent-search-api')
   torrentSearch.enableProvider('Rarbg')
 
-  console.log(name)
   torrentSearch.search(name, 'TV', 1)
     .then(torrents => {
-      console.log(torrents)
       const opn = require('opn')
       // TODO: Search for magnet link?
       if (torrents[0] && torrents[0].magnet) {
@@ -55,15 +53,23 @@ function getShow (name) {
     })
 }
 
-function pad (number) { return '0' + number.toString().slice(-2) }
-
-function getSEName (s) { return (s.season && s.number) ? `S${pad(s.season)}E${pad(s.number)}` : '' }
+function getSEName (s) {
+  if (s.season && s.number) {
+    if (s.season > 1900) {
+      return `${s.airdate.replace(/-/g, ' ')}`
+    } else {
+      return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
+    }
+  } else {
+    return ''
+  }
+}
 
 const day = 24 * 60 * 60 * 1000
 
 // entry point
 
-getSchedule(new Date(Date.now() - 2 * day), schedule => {
+getSchedule(new Date(Date.now() - 1 * day), schedule => {
   var showList = document.querySelector('#show-list')
   var showCard = document.querySelector('template#show-card')
   schedule.forEach(s => {
