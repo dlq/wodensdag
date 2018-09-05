@@ -1,6 +1,6 @@
 // required by index.html
 
-function getSchedule(date, callback) {
+function getSchedule (date, callback) {
   const baseURL = 'http://api.tvmaze.com'
 
   var moment = require('moment')
@@ -31,9 +31,8 @@ function getSchedule(date, callback) {
   })
 }
 
-function getShow(name) {
+function getShow (name) {
   const torrentSearch = require('torrent-search-api')
-
   torrentSearch.enablePublicProviders()
 
   torrentSearch.search(name, 'All')
@@ -54,11 +53,9 @@ function getShow(name) {
     })
 }
 
-const resolution = '720p'
+function pad (number) { return '0' + number.toString().slice(-2) }
 
-function pad(number) { return '0' + number.toString().slice(-2) }
-
-function getSEName(s) { return (s.season && s.number) ? `S${pad(s.season)}E${pad(s.number)}` : '' }
+function getSEName (s) { return (s.season && s.number) ? `S${pad(s.season)}E${pad(s.number)}` : '' }
 
 const day = 24 * 60 * 60 * 1000
 
@@ -70,6 +67,9 @@ getSchedule(new Date(Date.now() - 1 * day), schedule => {
   schedule.forEach(s => {
     var showClone = document.importNode(showCard.content, true)
     showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
+    showClone.querySelector('#show-img').addEventListener('click', () => {
+      getShow(`${s.show.name} ${getSEName(s)} 720p`)
+    })
     showClone.querySelector('#show-name').textContent = s.show.name
     showClone.querySelector('#episode').textContent = `${getSEName(s)}`
     showClone.querySelector('#episode-name').textContent = `${s.name}`
