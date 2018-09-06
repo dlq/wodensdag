@@ -65,18 +65,22 @@ function getSEName (s) {
   }
 }
 
+const resolution = '720p'
+
 const day = 24 * 60 * 60 * 1000
 
 // entry point
 
 getSchedule(new Date(Date.now() - 1 * day), schedule => {
+  // TODO: Is jquery worth it with this DOM manipulation?
+  // const $ = require('jquery')
   var showList = document.querySelector('#show-list')
   var showCard = document.querySelector('template#show-card')
   schedule.forEach(s => {
     var showClone = document.importNode(showCard.content, true)
     showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
     showClone.querySelector('#show-img').addEventListener('click', () => {
-      getShow(`${s.show.name} ${getSEName(s)} 720p`)
+      getShow(`${s.show.name} ${getSEName(s)} ${resolution}`)
     })
     showClone.querySelector('#show-name').textContent = s.show.name
     showClone.querySelector('#episode').textContent = `${getSEName(s)}`
