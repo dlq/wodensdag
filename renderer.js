@@ -80,7 +80,7 @@ getSchedule(new Date(Date.now() - 1 * day), schedule => {
     var showClone = document.importNode(showCard.content, true)
     showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
     showClone.querySelector('#show-img').addEventListener('click', () => {
-      getShow(`${s.show.name} ${getSEName(s)} ${resolution}`)
+      getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
     })
     showClone.querySelector('#show-name').textContent = s.show.name
     showClone.querySelector('#episode').textContent = `${getSEName(s)}`
