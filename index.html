@@ -16,21 +16,25 @@
       <img id="show-img" class="card-img-top" src="">
       <div class="card-body">
         <h5 id="show-name" class="card-title"></h5>
-        <h6 class="card-subtitle text-muted">
+        <h6 class="card-subtitle" style="font-weight: lighter;">
           <div id="episode"></div>
           <div id="episode-name"></div>
         </h6>
       </div>
-      <div class="card-footer">
-        <small class="text-muted">
-          <div id="show-footer"></div>
+      <div class="card-footer" style="min-height: 100px;">
+        <div>
+          <span id="show-imdb-link" class="badge badge-warning">IMDb</span>
+          <span id="show-download-link" class="badge badge-primary">Download</span>
+        </div>
+        <small>
+          <div id="show-footer" class="mt-2"></div>
         </small>
       </div>
     </div>
   </template>
 
   <template id="show-tags">
-    <span id="show-tag" class="badge"></span>
+    <span id="show-tag" class="badge badge-pill badge-secondary" style="font-weight: lighter;"></span>
   </template>
 
   <!--
