@@ -74,33 +74,35 @@ getSchedule(new Date(Date.now() - 1 * day), schedule => {
 
   var showCard = document.querySelector('template#show-card')
   schedule.forEach(s => {
-    var showClone = document.importNode(showCard.content, true)
-    showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
-    showClone.querySelector('#show-name').textContent = s.show.name
-    showClone.querySelector('#episode').textContent = `${getSEName(s)}`
-    showClone.querySelector('#episode-name').textContent = `${s.name}`
-    showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
-      shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-    })
-    showClone.querySelector('#show-download-link').addEventListener('click', () => {
-      getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
-    })
+    if (s.show.image) {
+      var showClone = document.importNode(showCard.content, true)
+      showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
+      showClone.querySelector('#show-name').textContent = s.show.name
+      showClone.querySelector('#episode').textContent = `${getSEName(s)}`
+      showClone.querySelector('#episode-name').textContent = `${s.name}`
+      showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
+        shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
+      })
+      showClone.querySelector('#show-download-link').addEventListener('click', () => {
+        getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
+      })
 
-    var showTags = document.querySelector('template#show-tags')
-    var countryClone = document.importNode(showTags.content, true)
-    countryClone.querySelector('#show-tag').textContent = s.show.network ? `${s.show.network.country.code}` : ''
-    showClone.querySelector('#show-footer').appendChild(countryClone)
-    if (s.show.type !== 'Scripted') {
-      var typeClone = document.importNode(showTags.content, true)
-      typeClone.querySelector('#show-tag').textContent = `${s.show.type}`
-      showClone.querySelector('#show-footer').appendChild(typeClone)
+      var showTags = document.querySelector('template#show-tags')
+      var countryClone = document.importNode(showTags.content, true)
+      countryClone.querySelector('#show-tag').textContent = s.show.network ? `${s.show.network.country.code}` : ''
+      showClone.querySelector('#show-tag-list').appendChild(countryClone)
+      if (s.show.type !== 'Scripted') {
+        var typeClone = document.importNode(showTags.content, true)
+        typeClone.querySelector('#show-tag').textContent = `${s.show.type}`
+        showClone.querySelector('#show-tag-list').appendChild(typeClone)
+      }
+      s.show.genres.forEach(tag => {
+        var tagClone = document.importNode(showTags.content, true)
+        tagClone.querySelector('#show-tag').textContent = `${tag}`
+        showClone.querySelector('#show-tag-list').appendChild(tagClone)
+      })
+
+      showList.appendChild(showClone)
     }
-    s.show.genres.forEach(tag => {
-      var tagClone = document.importNode(showTags.content, true)
-      tagClone.querySelector('#show-tag').textContent = `${tag}`
-      showClone.querySelector('#show-footer').appendChild(tagClone)
-    })
-
-    showList.appendChild(showClone)
   })
 })
