@@ -3,7 +3,7 @@ const { app, BrowserWindow } = require('electron')
 let mainWindow
 
 function createWindow () {
-  mainWindow = new BrowserWindow({ width: 960, height: 1058 })
+  mainWindow = new BrowserWindow({ width: 990, height: 1024 })
 
   mainWindow.loadFile('index.html')
 

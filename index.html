@@ -9,7 +9,15 @@
 
 <body>
 
-  <div id="show-list" class="card-deck m-3"></div>
+  <nav class="navbar navbar-light bg-light fixed-top">
+    <button id="date-previous" type="button" class="btn btn-secondary">&lt;</button>
+    <span id="date-now" class="navbar-brand"></span>
+    <button id="date-next" type="button" class="btn btn-secondary">&gt;</button>
+  </nav>
+
+  <main class="container-fluid mt-5">
+    <div id="show-list" class="card-deck m-3"></div>
+  </main>
 
   <template id="show-card">
     <div class="card text-white bg-dark m-3" style="min-width: 200px; max-width: 200px;">
@@ -23,8 +31,12 @@
         </div>
       </div>
       <div class="card-footer">
-        <button id="show-imdb-link" class="btn btn-outline-warning btn-sm">IMDb</button>
-        <button id="show-download-link" class="btn btn-outline-primary btn-sm">Download</button>
+        <button id="show-imdb-link" type="button" class="btn btn-outline-warning btn-sm">
+          IMDb
+        </button>
+        <button id="show-download-link" type="button" class="btn btn-outline-primary btn-sm float-right">
+          Download
+        </button>
       </div>
     </div>
   </template>
