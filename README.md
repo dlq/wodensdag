@@ -8,7 +8,10 @@
 
 [Download and install Node.js.](https://nodejs.org/en/download/)
 
-Download and unpack, or clone, this repository and open a terminal window in the directory.
+```
+$ git clone https://github.com/dlq/wodensdag
+$ cd wodensdag
+```
 
 ### Install Dependencies
 

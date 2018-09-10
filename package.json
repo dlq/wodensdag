@@ -6,6 +6,13 @@
   "repository": "http://github.com/dlq/wodensdag",
   "author": "Darcy Quesnel <darcy.quesnel@nonaverse.com>",
   "main": "main.js",
+  "keywords": [
+    "electron",
+    "desktop",
+    "tv",
+    "schedule",
+    "torrents"
+  ],
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
