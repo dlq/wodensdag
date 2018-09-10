@@ -10,9 +10,9 @@
 <body>
 
   <nav class="navbar navbar-light bg-light fixed-top">
-    <button id="date-previous" type="button" class="btn btn-secondary">&lt;</button>
+    <button id="date-previous" type="button" class="btn btn-secondary">&larr;</button>
     <span id="date-now" class="navbar-brand"></span>
-    <button id="date-next" type="button" class="btn btn-secondary">&gt;</button>
+    <button id="date-next" type="button" class="btn btn-secondary">&rarr;</button>
   </nav>
 
   <main class="container-fluid mt-5">
@@ -44,12 +44,6 @@
   <template id="show-tags">
     <span id="show-tag" class="badge badge-pill badge-secondary font-weight-light"></span>
   </template>
-
-  <!--
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="node_modules/popper.js/dist/umd/popper.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
-    -->
 
   <script>require('./renderer.js');</script>
 </body>

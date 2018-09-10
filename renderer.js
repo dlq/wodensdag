@@ -6,7 +6,7 @@ function getSchedule (date, callback) {
 
   const dateStr = moment(date).format('YYYY-MM-DD')
 
-  const countries = ['AU', 'CA', 'GB', 'NZ', 'US']
+  const countries = ['AU', 'CA', 'GB', 'US']
 
   var promise = require('bluebird')
   var request = promise.promisifyAll(require('request'), { multiArgs: true })
@@ -82,6 +82,7 @@ function setContent (date) {
       if (s.show.image) {
         var showClone = document.importNode(showCard.content, true)
         showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
+        showClone.querySelector('#show-name').textContent = `${s.show.name}`
         showClone.querySelector('#episode').textContent = `${getSEName(s)}`
         showClone.querySelector('#episode-name').textContent = `${s.name}`
         showClone.querySelector('#show-imdb-link').addEventListener('click', () => {

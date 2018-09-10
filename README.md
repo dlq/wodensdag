@@ -4,7 +4,7 @@
 
 ## Dev
 
-### Install
+### Install Dependencies
 
 ```
 $ npm install
@@ -16,9 +16,17 @@ $ npm install
 $ npm start
 ```
 
-## TODO
+### Build App
 
-Build, etc.
+```
+$ npm run pack
+```
+
+### Build Distribution Files
+
+```
+$ npm run dist
+```
 
 ## License
 

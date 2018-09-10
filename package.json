@@ -1,23 +1,25 @@
 {
   "name": "wodensdag",
   "version": "0.2.0",
+  "license": "CC0-1.0",
   "description": "Yesterday's shows",
+  "repository": "http://github.com/dlq/wodensdag",
+  "author": "Darcy Quesnel <darcy.quesnel@nonaverse.com>",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "repository": "http://github.com/dlq/wodensdag",
-  "keywords": [
-    "TV",
-    "schedule",
-    "torrent",
-    "search",
-    "electron"
-  ],
-  "author": "Darcy Quesnel",
-  "license": "CC0-1.0",
+  "build": {
+    "appId": "com.nonaverse.wodensdag",
+    "mac": {
+      "category": "public.app-category.entertainment"
+    }
+  },
   "devDependencies": {
     "electron": "^2.0.8",
+    "electron-builder": "^20.28.4",
     "eslint": "^5.5.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
