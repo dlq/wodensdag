@@ -1,8 +1,14 @@
 # wodensdag
 
-> Yesterday's TV.
+> Yesterday's TV
 
 ## Dev
+
+### Setup
+
+[Download and install Node.js.](https://nodejs.org/en/download/)
+
+Download and unpack, or clone, this repository and open a terminal window in the directory.
 
 ### Install Dependencies
 
@@ -27,6 +33,10 @@ $ npm run pack
 ```
 $ npm run dist
 ```
+
+## TODO
+
+A handful of features and interface tweaks.
 
 ## License
 
