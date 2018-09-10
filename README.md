@@ -15,7 +15,7 @@ $ cd wodensdag
 
 To handle the magnet links, install something like
 [Transmission](https://transmissionbt.com) or
-[WebTorrent](https://webtorrent.io).
+[WebTorrent](https://webtorrent.io/desktop/).
 
 ### Install Dependencies
 
