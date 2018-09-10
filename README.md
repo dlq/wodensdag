@@ -6,12 +6,16 @@
 
 ### Setup
 
-[Download and install Node.js.](https://nodejs.org/en/download/)
-
+[Download and install Node.js](https://nodejs.org/en/download/)
+then download or clone this repository:
 ```
 $ git clone https://github.com/dlq/wodensdag
 $ cd wodensdag
 ```
+
+To handle the magnet links, install something like
+[Transmission](https://transmissionbt.com) or
+[WebTorrent](https://webtorrent.io).
 
 ### Install Dependencies
 
