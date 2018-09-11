@@ -20,7 +20,7 @@ function getSchedule (date, callback) {
       results
         .reduce((acc, val) => acc.concat(val), [])
         .sort((a, b) => {
-          return (localStorage.getItem(a.show.id) ? (localStorage.getItem(b.show.id) ? 0 : -1) : (localStorage.getItem(b.show.id) ? 1 : 0 )) ||
+          return (localStorage.getItem(a.show.id) ? (localStorage.getItem(b.show.id) ? 0 : -1) : (localStorage.getItem(b.show.id) ? 1 : 0)) ||
             b.show.weight - a.show.weight ||
             a.show.name.localeCompare(b.show.name) ||
             a.number - b.number
