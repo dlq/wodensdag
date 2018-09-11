@@ -1,11 +1,26 @@
 const { shell } = require('electron')
 var moment = require('moment')
 
+function getFav (f) {
+  return localStorage.getItem(f.show.id)
+}
+
+function toggleFav (f) {
+  if (getFav(f)) localStorage.removeItem(f.show.id)
+  else localStorage.setItem(f.show.id, 'fav')
+}
+
+function compareFav (a, b) {
+  if (getFav(a)) {
+    return (getFav(b)) ? 0 : -1
+  } else {
+    return (getFav(b)) ? 1 : 0
+  }
+}
+
 function getSchedule (date, callback) {
   const baseURL = 'http://api.tvmaze.com'
-
   const dateStr = moment(date).format('YYYY-MM-DD')
-
   const countries = ['AU', 'CA', 'GB', 'US']
 
   var promise = require('bluebird')
@@ -20,10 +35,11 @@ function getSchedule (date, callback) {
       results
         .reduce((acc, val) => acc.concat(val), [])
         .sort((a, b) => {
-          return (localStorage.getItem(a.show.id) ? (localStorage.getItem(b.show.id) ? 0 : -1) : (localStorage.getItem(b.show.id) ? 1 : 0)) ||
-            b.show.weight - a.show.weight ||
-            a.show.name.localeCompare(b.show.name) ||
-            a.number - b.number
+          return 0 ||
+            compareFav(a, b) || // favourites first
+            b.show.weight - a.show.weight || // weight, descending
+            a.show.name.localeCompare(b.show.name) || // show name, ascending
+            a.number - b.number // episode, ascending
         })
     )
   }).catch((error) => {
@@ -89,17 +105,12 @@ function setContent (date) {
         showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
           shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
         })
-        if (localStorage.getItem(s.show.id)) {
+        if (getFav(s)) {
           showClone.querySelector('#show-fav').classList.toggle('active')
         }
         showClone.querySelector('#show-fav').addEventListener('click', (event) => {
           event.srcElement.classList.toggle('active')
-          if (localStorage.getItem(s.show.id)) {
-            localStorage.removeItem(s.show.id)
-          } else {
-            localStorage.setItem(s.show.id, 'fav')
-            console.log(localStorage.getItem(s.show.id))
-          }
+          toggleFav(s)
         })
         showClone.querySelector('#show-download-link').addEventListener('click', () => {
           getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
