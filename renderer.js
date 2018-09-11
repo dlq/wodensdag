@@ -20,7 +20,8 @@ function getSchedule (date, callback) {
       results
         .reduce((acc, val) => acc.concat(val), [])
         .sort((a, b) => {
-          return b.show.weight - a.show.weight ||
+          return (localStorage.getItem(a.show.id) ? (localStorage.getItem(b.show.id) ? 0 : -1) : (localStorage.getItem(b.show.id) ? 1 : 0 )) ||
+            b.show.weight - a.show.weight ||
             a.show.name.localeCompare(b.show.name) ||
             a.number - b.number
         })
@@ -82,11 +83,23 @@ function setContent (date) {
       if (s.show.image) {
         var showClone = document.importNode(showCard.content, true)
         showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
-        showClone.querySelector('#show-name').textContent = `${s.show.name}`
+        showClone.querySelector('#show-name').textContent = `${s.show.name} ${s.show.weight}`
         showClone.querySelector('#episode').textContent = `${getSEName(s)}`
         showClone.querySelector('#episode-name').textContent = `${s.name}`
         showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
           shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
+        })
+        if (localStorage.getItem(s.show.id)) {
+          showClone.querySelector('#show-fav').classList.toggle('active')
+        }
+        showClone.querySelector('#show-fav').addEventListener('click', (event) => {
+          event.srcElement.classList.toggle('active')
+          if (localStorage.getItem(s.show.id)) {
+            localStorage.removeItem(s.show.id)
+          } else {
+            localStorage.setItem(s.show.id, 'fav')
+            console.log(localStorage.getItem(s.show.id))
+          }
         })
         showClone.querySelector('#show-download-link').addEventListener('click', () => {
           getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
