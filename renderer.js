@@ -83,7 +83,7 @@ function setContent (date) {
       if (s.show.image) {
         var showClone = document.importNode(showCard.content, true)
         showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
-        showClone.querySelector('#show-name').textContent = `${s.show.name} ${s.show.weight}`
+        showClone.querySelector('#show-name').textContent = `${s.show.name}`
         showClone.querySelector('#episode').textContent = `${getSEName(s)}`
         showClone.querySelector('#episode-name').textContent = `${s.name}`
         showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
