@@ -45,10 +45,11 @@ function getShow (name) {
   torrentSearch.enableProvider('Rarbg')
   torrentSearch.search(name, 'TV', 1)
     .then(torrents => {
+      // TODO: Should the caller handle this?
       if (torrents[0] && torrents[0].magnet) {
         shell.openExternal(torrents[0].magnet, { activate: false })
       } else {
-        // TODO: Retry?
+        // TODO: Should I retry with other names?
       }
     })
     .catch((e) => { console.error(e) })
@@ -59,6 +60,7 @@ function getSeasonEpisodeString (s) {
   else return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
 }
 
+// TODO: Should the resolution be a preference?
 const resolution = '720p'
 
 function setContent (date) {
@@ -98,7 +100,7 @@ function setContent (date) {
       // add imdb button action
       scClone.find('#show-imdb-link').click(() => {
         shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-        // TODO: What if no imdb title?
+        // TODO: What if there's no imdb title?
       })
 
       // add fav button state and action
@@ -106,12 +108,14 @@ function setContent (date) {
       scClone.find('#show-fav').click((event) => {
         $(event.currentTarget).toggleClass('active')
         toggleFav(s)
+        // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
       // add mag button action
       scClone.find('#show-download-link').click(() => {
         getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`)
-        // TODO: What if no magnet link?
+        // TODO: What if there's no magnet link?
+        // TODO: What if there's no torrent app?
       })
       $('#show-list').append(scClone)
     })
