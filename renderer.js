@@ -1,5 +1,6 @@
 const { shell } = require('electron')
 var moment = require('moment')
+const $ = require('jquery')
 
 function getFav (f) {
   return localStorage.getItem(f.show.id)
@@ -18,26 +19,25 @@ function compareFav (a, b) {
 function getSchedule (date, callback) {
   const baseURL = 'http://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
-  const countries = ['AU', 'CA', 'GB', 'US']
 
-  var promise = require('bluebird')
-  var request = promise.promisifyAll(require('request'), { multiArgs: true })
-  promise.map(countries, (code) => {
-    return request
-      .getAsync(`${baseURL}/schedule?country=${code}&date=${dateStr}`)
-      .spread((_, body) => { return JSON.parse(body) })
-  }).then((results) => {
-    callback(
-      results
-        .reduce((acc, val) => acc.concat(val), [])
-        .sort((a, b) => {
-          return compareFav(a, b) || // favourites first
+  // TODO: There must be a better way but none of the array-based methods wait?
+  $.when(
+    $.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
+    $.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
+    $.getJSON(`${baseURL}/schedule?country=GB&date=${dateStr}`),
+    $.getJSON(`${baseURL}/schedule?country=US&date=${dateStr}`)
+  )
+    .then((r1, r2, r3, r4) => {
+      callback(
+        [].concat(r1[0], r2[0], r3[0], r4[0])
+          .sort((a, b) => {
+            return compareFav(a, b) || // favourites first
             b.show.weight - a.show.weight || // weight, descending
             a.show.name.localeCompare(b.show.name) || // show name, ascending
             a.number - b.number // episode, ascending
-        })
-    )
-  }).catch((error) => { console.error(error) })
+          })
+      )
+    })
 }
 
 function getShow (name) {
@@ -64,8 +64,6 @@ function getSeasonEpisodeString (s) {
 const resolution = '720p'
 
 function setContent (date) {
-  const $ = require('jquery')
-
   // add info and actions to navbar
   $('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   $('#date-previous').off('click')
