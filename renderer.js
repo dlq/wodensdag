@@ -11,11 +11,8 @@ function toggleFav (f) {
 }
 
 function compareFav (a, b) {
-  if (getFav(a)) {
-    return (getFav(b)) ? 0 : -1
-  } else {
-    return (getFav(b)) ? 1 : 0
-  }
+  if (getFav(a)) return (getFav(b)) ? 0 : -1
+  else return (getFav(b)) ? 1 : 0
 }
 
 function getSchedule (date, callback) {
@@ -26,31 +23,26 @@ function getSchedule (date, callback) {
   var promise = require('bluebird')
   var request = promise.promisifyAll(require('request'), { multiArgs: true })
   promise.map(countries, (code) => {
-    const url = `${baseURL}/schedule?country=${code}&date=${dateStr}`
-    return request.getAsync(url).spread((_, body) => {
-      return JSON.parse(body)
-    })
+    return request
+      .getAsync(`${baseURL}/schedule?country=${code}&date=${dateStr}`)
+      .spread((_, body) => { return JSON.parse(body) })
   }).then((results) => {
     callback(
       results
         .reduce((acc, val) => acc.concat(val), [])
         .sort((a, b) => {
-          return 0 ||
-            compareFav(a, b) || // favourites first
+          return compareFav(a, b) || // favourites first
             b.show.weight - a.show.weight || // weight, descending
             a.show.name.localeCompare(b.show.name) || // show name, ascending
             a.number - b.number // episode, ascending
         })
     )
-  }).catch((error) => {
-    console.error(error)
-  })
+  }).catch((error) => { console.error(error) })
 }
 
 function getShow (name) {
   const torrentSearch = require('torrent-search-api')
   torrentSearch.enableProvider('Rarbg')
-
   torrentSearch.search(name, 'TV', 1)
     .then(torrents => {
       if (torrents[0] && torrents[0].magnet) {
@@ -59,81 +51,69 @@ function getShow (name) {
         // TODO: Retry?
       }
     })
-    .catch((e) => {
-      console.error(e)
-    })
+    .catch((e) => { console.error(e) })
 }
 
-function getSEName (s) {
-  if (s.season && s.number) {
-    if (s.season > 1900) {
-      return `${s.airdate.replace(/-/g, ' ')}`
-    } else {
-      return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
-    }
-  } else {
-    return ''
-  }
+function getSeasonEpisodeString (s) {
+  if (!(s.season && s.number) || (s.season > 1900)) return s.airdate.replace(/-/g, ' ')
+  else return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
 }
 
 const resolution = '720p'
 
 function setContent (date) {
-  // TODO: Is jquery worth it with this DOM manipulation?
   const $ = require('jquery')
 
-  document.querySelector('#date-now').textContent = moment(date).format('dddd, MMMM D, YYYY')
-
+  // add info and actions to navbar
+  $('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   $('#date-previous').off('click')
-  $('#date-previous').one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
+    .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
   $('#date-next').off('click')
-  $('#date-next').one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
+    .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
 
+  // start with an empty list
   $('#show-list').empty()
 
-  getSchedule(date, schedule => {
-    var showList = document.querySelector('#show-list')
+  getSchedule(date, (schedule) => {
+    schedule.forEach((s) => {
+      var scClone = $('template#show-card').contents().clone()
 
-    var showCard = document.querySelector('template#show-card')
-    schedule.forEach(s => {
-      if (s.show.image) {
-        var showClone = document.importNode(showCard.content, true)
-        showClone.querySelector('#show-img')['src'] = s.show.image ? s.show.image.medium : ''
-        showClone.querySelector('#show-name').textContent = `${s.show.name}`
-        showClone.querySelector('#episode').textContent = `${getSEName(s)}`
-        showClone.querySelector('#episode-name').textContent = `${s.name}`
-        showClone.querySelector('#show-imdb-link').addEventListener('click', () => {
-          shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-        })
-        if (getFav(s)) {
-          showClone.querySelector('#show-fav').classList.toggle('active')
-        }
-        showClone.querySelector('#show-fav').addEventListener('click', (event) => {
-          event.srcElement.classList.toggle('active')
-          toggleFav(s)
-        })
-        showClone.querySelector('#show-download-link').addEventListener('click', () => {
-          getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSEName(s)} ${resolution}`)
-          // TODO: Indicate no result somehow.
-        })
+      // add img src
+      scClone.find('#show-img').attr('src', s.show.image ? s.show.image.medium : '')
 
-        var showTags = document.querySelector('template#show-tags')
-        var countryClone = document.importNode(showTags.content, true)
-        countryClone.querySelector('#show-tag').textContent = s.show.network ? `${s.show.network.country.code}` : ''
-        showClone.querySelector('#show-tag-list').appendChild(countryClone)
-        if (s.show.type !== 'Scripted') {
-          var typeClone = document.importNode(showTags.content, true)
-          typeClone.querySelector('#show-tag').textContent = `${s.show.type}`
-          showClone.querySelector('#show-tag-list').appendChild(typeClone)
-        }
-        s.show.genres.forEach(tag => {
-          var tagClone = document.importNode(showTags.content, true)
-          tagClone.querySelector('#show-tag').textContent = `${tag}`
-          showClone.querySelector('#show-tag-list').appendChild(tagClone)
-        })
+      // add show and episode names
+      scClone.find('#show-name').text(s.show.name)
+      scClone.find('#episode').text(getSeasonEpisodeString(s))
+      scClone.find('#episode-name').text(s.name)
 
-        showList.appendChild(showClone)
-      }
+      // add tags
+      if (s.show.type !== 'Scripted') s.show.genres.unshift(s.show.type)
+      if (s.show.network) s.show.genres.unshift(s.show.network.country.code)
+      s.show.genres.forEach((tag) => {
+        scClone.find('#show-tag-list').append(
+          $('template#show-tags').contents().clone()
+            .text(tag))
+      })
+
+      // add imdb button action
+      scClone.find('#show-imdb-link').click(() => {
+        shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
+        // TODO: What if no imdb title?
+      })
+
+      // add fav button state and action
+      if (getFav(s)) scClone.find('#show-fav').toggleClass('active')
+      scClone.find('#show-fav').click((event) => {
+        $(event.currentTarget).toggleClass('active')
+        toggleFav(s)
+      })
+
+      // add mag button action
+      scClone.find('#show-download-link').click(() => {
+        getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`)
+        // TODO: What if no magnet link?
+      })
+      $('#show-list').append(scClone)
     })
   })
 }
