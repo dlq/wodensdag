@@ -20,7 +20,6 @@ function getSchedule (date, callback) {
   const baseURL = 'http://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
 
-  // TODO: There must be a better way but none of the array-based methods wait?
   $.when(
     $.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
     $.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
@@ -40,18 +39,11 @@ function getSchedule (date, callback) {
     })
 }
 
-function getShow (name) {
+function getShow (name, callback) {
   const torrentSearch = require('torrent-search-api')
   torrentSearch.enableProvider('Rarbg')
   torrentSearch.search(name, 'TV', 1)
-    .then(torrents => {
-      // TODO: Should the caller handle this?
-      if (torrents[0] && torrents[0].magnet) {
-        shell.openExternal(torrents[0].magnet, { activate: false })
-      } else {
-        // TODO: Should I retry with other names?
-      }
-    })
+    .then((torrents) => { callback(torrents[0] ? torrents[0].magnet : '') })
     .catch((e) => { console.error(e) })
 }
 
@@ -102,18 +94,22 @@ function setContent (date) {
       })
 
       // add fav button state and action
-      if (getFav(s)) scClone.find('#show-fav').toggleClass('active')
+      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas')
       scClone.find('#show-fav').click((event) => {
-        $(event.currentTarget).toggleClass('active')
+        $(event.currentTarget).children().toggleClass('fas')
         toggleFav(s)
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
       // add mag button action
       scClone.find('#show-download-link').click(() => {
-        getShow(`${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`)
-        // TODO: What if there's no magnet link?
-        // TODO: What if there's no torrent app?
+        const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
+        getShow(searchName, (magnetLink) => {
+          shell.openExternal(magnetLink, { activate: false })
+          // TODO: What if there's no magnet link?
+          // TODO: What if there's no torrent app?
+          // TODO: Should I retry with other names?
+        })
       })
       $('#show-list').append(scClone)
     })

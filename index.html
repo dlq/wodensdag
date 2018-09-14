@@ -5,14 +5,19 @@
   <meta charset="UTF-8">
   <title>wodensdag</title>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules//@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 
 <body>
 
-  <nav class="navbar fixed-top" style="background-color: rgba(220,220,220,0.9)">
-    <button id="date-previous" type="button" class="btn btn-secondary">&larr;</button>
-    <span id="date-now" class="navbar-brand"></span>
-    <button id="date-next" type="button" class="btn btn-secondary">&rarr;</button>
+  <nav class="navbar navbar-light bg-light fixed-top">
+    <button id="date-previous" type="button" class="btn btn-secondary btn-sm">
+      <i class="fas fa-arrow-circle-left" title="Previous date"></i>
+    </button>
+    <span id="date-now" class="navbar-brand font-weight-bold text-muted"></span>
+    <button id="date-next" type="button" class="btn btn-secondary btn-sm">
+      <i class="fas fa-arrow-circle-right" title="Next date"></i>
+    </button>
   </nav>
 
   <main class="container-fluid mt-5">
@@ -24,28 +29,28 @@
       <img id="show-img" class="card-img-top" src="">
       <div class="card-body">
         <div id="show-name" class="card-title" style="height: 3rem;"></div>
-        <div id="show-tag-list" class="card-subtitle font-weight-light" style="height: 3rem;"></div>
+        <div id="show-tag-list" class="card-subtitle" style="height: 3rem;"></div>
         <div class="mt-4">
-          <div id="episode" class="text-muted"></div>
+          <div id="episode"></div>
           <div id="episode-name"></div>
         </div>
       </div>
-      <div class="card-footer">
-        <button id="show-imdb-link" type="button" class="btn btn-outline-warning btn-sm">
-          IMDb
+      <div class="card-footer text-right">
+        <button id="show-imdb-link" type="button" class="btn btn-warning btn-sm">
+          <i class="fab fa-imdb fa-lg" title="Open IMDb link"></i>
         </button>
-        <button id="show-fav" type="button" class="btn btn-outline-danger btn-sm">
-          fav
+        <button id="show-fav" type="button" class="btn btn-danger btn-sm mx-2">
+          <i class="far fa-star" title="Favourite"></i>
         </button>
-        <button id="show-download-link" type="button" class="btn btn-outline-primary btn-sm">
-          mag
+        <button id="show-download-link" type="button" class="btn btn-primary btn-sm">
+          <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
         </button>
       </div>
     </div>
   </template>
 
   <template id="show-tags">
-    <span id="show-tag" class="badge badge-pill badge-secondary font-weight-light"></span>
+    <span id="show-tag" class="text-uppercase"></span>
   </template>
 
   <script>require('./renderer.js');</script>
