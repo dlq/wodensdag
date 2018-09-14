@@ -1,6 +1,7 @@
 const { shell } = require('electron')
+const jquery = require('jquery')
 var moment = require('moment')
-const $ = require('jquery')
+var ellipsis = require('text-ellipsis')
 
 function getFav (f) {
   return localStorage.getItem(f.show.id)
@@ -20,11 +21,11 @@ function getSchedule (date, callback) {
   const baseURL = 'http://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
 
-  $.when(
-    $.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
-    $.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
-    $.getJSON(`${baseURL}/schedule?country=GB&date=${dateStr}`),
-    $.getJSON(`${baseURL}/schedule?country=US&date=${dateStr}`)
+  jquery.when(
+    jquery.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
+    jquery.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
+    jquery.getJSON(`${baseURL}/schedule?country=GB&date=${dateStr}`),
+    jquery.getJSON(`${baseURL}/schedule?country=US&date=${dateStr}`)
   )
     .then((r1, r2, r3, r4) => {
       callback(
@@ -57,35 +58,32 @@ const resolution = '720p'
 
 function setContent (date) {
   // add info and actions to navbar
-  $('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
-  $('#date-previous').off('click')
+  jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
+  jquery('#date-previous').off('click')
     .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
-  $('#date-next').off('click')
+  jquery('#date-next').off('click')
     .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
 
   // start with an empty list
-  $('#show-list').empty()
+  jquery('#show-list').empty()
 
   getSchedule(date, (schedule) => {
     schedule.forEach((s) => {
-      var scClone = $('template#show-card').contents().clone()
+      var scClone = jquery('template#show-card').contents().clone()
 
       // add img src
       scClone.find('#show-img').attr('src', s.show.image ? s.show.image.medium : '')
 
       // add show and episode names
-      scClone.find('#show-name').text(s.show.name)
+      scClone.find('#show-name').text(ellipsis(s.show.name, 30))
       scClone.find('#episode').text(getSeasonEpisodeString(s))
-      scClone.find('#episode-name').text(s.name)
+      scClone.find('#episode-name').text(ellipsis(s.name, 35))
 
       // add tags
       if (s.show.type !== 'Scripted') s.show.genres.unshift(s.show.type)
       if (s.show.network) s.show.genres.unshift(s.show.network.country.code)
-      s.show.genres.forEach((tag) => {
-        scClone.find('#show-tag-list').append(
-          $('template#show-tags').contents().clone()
-            .text(tag))
-      })
+      scClone.find('#show-tag-list').append(
+        s.show.genres.join(' &middot; '))
 
       // add imdb button action
       scClone.find('#show-imdb-link').click(() => {
@@ -96,8 +94,8 @@ function setContent (date) {
       // add fav button state and action
       if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas')
       scClone.find('#show-fav').click((event) => {
-        $(event.currentTarget).children().toggleClass('fas')
         toggleFav(s)
+        jquery(event.currentTarget).children().toggleClass('fas')
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
@@ -111,7 +109,7 @@ function setContent (date) {
           // TODO: Should I retry with other names?
         })
       })
-      $('#show-list').append(scClone)
+      jquery('#show-list').append(scClone)
     })
   })
 }
