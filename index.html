@@ -5,19 +5,22 @@
   <meta charset="UTF-8">
   <title>wodensdag</title>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="node_modules//@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 
-<body style="hyphens: auto;">
+<body style="hyphens: auto; background: rgba(240,240,240,0.9)">
 
-  <nav class="navbar navbar-light bg-light fixed-top">
-    <button id="date-previous" type="button" class="btn btn-secondary btn-sm">
-      <i class="fas fa-arrow-circle-left" title="Previous date"></i>
-    </button>
-    <span id="date-now" class="navbar-brand font-weight-bold text-muted"></span>
-    <button id="date-next" type="button" class="btn btn-secondary btn-sm">
-      <i class="fas fa-arrow-circle-right" title="Next date"></i>
-    </button>
+  <nav class="navbar navbar-light bg-light fixed-top" style="-webkit-app-region: drag;">
+    <span></span>
+    <span>
+      <button id="date-previous" type="button" class="btn btn-light pt-0">
+        <i class="fas fa-angle-left" title="Previous date"></i>
+      </button>
+      <span id="date-now" class="font-weight-bold text-muted h5"></span>
+      <button id="date-next" type="button" class="btn btn-light pt-0">
+        <i class="fas fa-angle-right" title="Next date"></i>
+      </button>
+    </span>
   </nav>
 
   <main class="container-fluid mt-5">
@@ -30,7 +33,7 @@
       <div class="card-body">
         <div id="show-name" class="card-title font-weight-bold" style="height: 3rem;"></div>
         <small>
-        <div id="show-tag-list" class="card-subtitle font-weight-light text-warning" style="height: 2rem;"></div>
+          <div id="show-tag-list" class="card-subtitle font-weight-light text-warning" style="height: 2rem;"></div>
         </small>
         <div class="mt-4" style="max-height: 4rem;">
           <small><span id="episode"></span></small>
@@ -39,13 +42,13 @@
         </div>
       </div>
       <div class="card-footer text-right">
-        <button id="show-imdb-link" type="button" class="btn btn-warning btn-sm">
+        <button id="show-imdb-link" type="button" class="btn btn-outline-warning btn-sm">
           <i class="fab fa-imdb fa-lg" title="Open IMDb link"></i>
         </button>
-        <button id="show-fav" type="button" class="btn btn-danger btn-sm mx-2">
+        <button id="show-fav" type="button" class="btn btn-outline-danger btn-sm mx-2">
           <i class="far fa-star" title="Favourite"></i>
         </button>
-        <button id="show-download-link" type="button" class="btn btn-primary btn-sm">
+        <button id="show-download-link" type="button" class="btn btn-outline-primary btn-sm">
           <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
         </button>
       </div>

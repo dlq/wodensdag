@@ -1,9 +1,24 @@
 const { app, BrowserWindow } = require('electron')
+const windowStateKeeper = require('electron-window-state')
 
 let mainWindow
 
 function createWindow () {
-  mainWindow = new BrowserWindow({ width: 990, height: 1024 })
+  let mainWindowState = windowStateKeeper({
+    defaultWidth: 990,
+    defaultHeight: 1024
+  })
+
+  mainWindow = new BrowserWindow({
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
+    titleBarStyle: 'hiddenInset',
+    transparent: true
+  })
+
+  mainWindowState.manage(mainWindow)
 
   mainWindow.loadFile('index.html')
 

@@ -58,7 +58,7 @@ const resolution = '720p'
 
 function setContent (date) {
   // add info and actions to navbar
-  jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
+  jquery('#date-now').text(moment(date).format('ddd, MMM DD, YYYY'))
   jquery('#date-previous').off('click')
     .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
   jquery('#date-next').off('click')
