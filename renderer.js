@@ -18,7 +18,7 @@ function compareFav (a, b) {
 }
 
 function getSchedule (date, callback) {
-  const baseURL = 'http://api.tvmaze.com'
+  const baseURL = 'https://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
 
   jquery.when(
@@ -58,7 +58,7 @@ const resolution = '720p'
 
 function setContent (date) {
   // add info and actions to navbar
-  jquery('#date-now').text(moment(date).format('ddd, MMM DD, YYYY'))
+  jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   jquery('#date-previous').off('click')
     .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
   jquery('#date-next').off('click')
@@ -69,7 +69,9 @@ function setContent (date) {
 
   getSchedule(date, (schedule) => {
     schedule.forEach((s) => {
-      var scClone = jquery('template#show-card').contents().clone()
+      if (!s.show.image) return // skip if there's no img
+
+      var scClone = jquery('template#show-card').contents().clone() // new card
 
       // add img src
       scClone.find('#show-img').attr('src', s.show.image ? s.show.image.medium : '')
@@ -92,10 +94,10 @@ function setContent (date) {
       })
 
       // add fav button state and action
-      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas')
+      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-white')
       scClone.find('#show-fav').click((event) => {
         toggleFav(s)
-        jquery(event.currentTarget).children().toggleClass('fas')
+        jquery(event.currentTarget).children().toggleClass('fas').toggleClass('text-white')
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
@@ -103,13 +105,19 @@ function setContent (date) {
       scClone.find('#show-download-link').click(() => {
         const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
         getShow(searchName, (magnetLink) => {
-          shell.openExternal(magnetLink, { activate: false })
-          // TODO: What if there's no magnet link?
-          // TODO: What if there's no torrent app?
+          if (!magnetLink) {
+            return alert(`Couldn't find "${searchName}".` + '  ' +
+              'Not sure where it is or if I\'m searching for the right thing, really.')
+          }
+          if (!shell.openExternal(magnetLink, { activate: false })) {
+            return alert('Do you have a torrent client app installed?' + '  ' +
+              'There\'s some good ones out there.  Right now, I kind of like WebTorrent.')
+          }
           // TODO: Should I retry with other names?
         })
       })
-      jquery('#show-list').append(scClone)
+
+      jquery('#show-list').append(scClone) // add new card
     })
   })
 }
