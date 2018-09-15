@@ -8,13 +8,13 @@ function getFav (f) {
 }
 
 function toggleFav (f) {
-  if (getFav(f)) localStorage.removeItem(f.show.id)
-  else localStorage.setItem(f.show.id, 'fav')
+  if (getFav(f)) { localStorage.removeItem(f.show.id) }
+  else { localStorage.setItem(f.show.id, 'fav') }
 }
 
 function compareFav (a, b) {
-  if (getFav(a)) return (getFav(b)) ? 0 : -1
-  else return (getFav(b)) ? 1 : 0
+  if (getFav(a)) { return (getFav(b)) ? 0 : -1 }
+  else { return (getFav(b)) ? 1 : 0 }
 }
 
 function getSchedule (date, callback) {
@@ -43,14 +43,15 @@ function getSchedule (date, callback) {
 function getShow (name, callback) {
   const torrentSearch = require('torrent-search-api')
   torrentSearch.enableProvider('Rarbg')
+  // TODO: Should there be settings for search providers?
   torrentSearch.search(name, 'TV', 1)
     .then((torrents) => { callback(torrents[0] ? torrents[0].magnet : '') })
     .catch((e) => { console.error(e) })
 }
 
 function getSeasonEpisodeString (s) {
-  if (!(s.season && s.number) || (s.season > 1900)) return s.airdate.replace(/-/g, ' ')
-  else return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
+  if (!(s.season && s.number) || (s.season > 1900)) { return s.airdate.replace(/-/g, ' ') }
+  else { return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}` }
 }
 
 // TODO: Should the resolution be a preference?
@@ -70,7 +71,7 @@ function setContent (date) {
 
   getSchedule(date, (schedule) => {
     schedule.forEach((s) => {
-      if (!s.show.image) return // skip if there's no img
+      if (!s.show.image) { return } // skip if there's no img
 
       var scClone = jquery('template#show-card').contents().clone() // new card
 
@@ -100,7 +101,8 @@ function setContent (date) {
       if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-white')
       scClone.find('#show-fav').click((event) => {
         toggleFav(s)
-        jquery(event.currentTarget).children().toggleClass('fas').toggleClass('text-white')
+        jquery(event.currentTarget).children()
+          .toggleClass('fas').toggleClass('text-white')
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
@@ -109,13 +111,12 @@ function setContent (date) {
         const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
         getShow(searchName, (magnetLink) => {
           if (!magnetLink) {
-            alert(`Couldn't find "${searchName}".` + '  ' +
-              'Not sure where it is or if I\'m searching for the right thing, really.')
+            shell.openExternal(`http://rarbg.to/torrents.php?search=${searchName}`, { activate: false })
           } else if (!shell.openExternal(magnetLink, { activate: false })) {
             alert('Do you have a torrent client app installed?' + '  ' +
               'There\'s some good ones out there.  Right now, I kind of like WebTorrent.')
+            // TODO: After an alert the navbar isn't draggable.
           }
-          // TODO: Should I retry with other names?
         })
       })
 
