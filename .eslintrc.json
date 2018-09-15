@@ -1,6 +1,7 @@
 {
     "extends": "standard",
     "globals": {
-        "localStorage" : true
+        "localStorage" : true,
+        "alert": true
     }
 }
