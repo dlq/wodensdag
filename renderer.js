@@ -98,11 +98,11 @@ function setContent (date) {
       })
 
       // add fav button state and action
-      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-white')
+      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-warning')
       scClone.find('#show-fav').click((event) => {
         toggleFav(s)
         jquery(event.currentTarget).children()
-          .toggleClass('fas').toggleClass('text-white')
+          .toggleClass('fas').toggleClass('text-warning')
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
