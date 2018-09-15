@@ -61,6 +61,7 @@ function setContent (date) {
   jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   jquery('#date-previous').off('click')
     .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
+  // TODO: Should the next button be disabled when it's today?
   jquery('#date-next').off('click')
     .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
 
@@ -82,15 +83,17 @@ function setContent (date) {
       scClone.find('#episode-name').text(ellipsis(s.name, 35))
 
       // add tags
-      if (s.show.type !== 'Scripted') s.show.genres.unshift(s.show.type)
-      if (s.show.network) s.show.genres.unshift(s.show.network.country.code)
-      scClone.find('#show-tag-list').append(
-        s.show.genres.join(' &middot; '))
+      if (s.show.type !== 'Scripted') { s.show.genres.unshift(s.show.type) }
+      if (s.show.network) { s.show.genres.unshift(s.show.network.country.code) }
+      scClone.find('#show-tag-list').append(s.show.genres.join(' &middot; '))
 
       // add imdb button action
       scClone.find('#show-imdb-link').click(() => {
-        shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-        // TODO: What if there's no imdb title?
+        if (!s.show.externals.imdb) {
+          shell.openExternal(`https://www.imdb.com/find?q=${s.show.name}`, { activate: false })
+        } else {
+          shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
+        }
       })
 
       // add fav button state and action
@@ -106,11 +109,10 @@ function setContent (date) {
         const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
         getShow(searchName, (magnetLink) => {
           if (!magnetLink) {
-            return alert(`Couldn't find "${searchName}".` + '  ' +
+            alert(`Couldn't find "${searchName}".` + '  ' +
               'Not sure where it is or if I\'m searching for the right thing, really.')
-          }
-          if (!shell.openExternal(magnetLink, { activate: false })) {
-            return alert('Do you have a torrent client app installed?' + '  ' +
+          } else if (!shell.openExternal(magnetLink, { activate: false })) {
+            alert('Do you have a torrent client app installed?' + '  ' +
               'There\'s some good ones out there.  Right now, I kind of like WebTorrent.')
           }
           // TODO: Should I retry with other names?
