@@ -29,7 +29,7 @@ $ npm install
 $ npm start
 ```
 
-### Build App
+### Build App Locally
 
 ```
 $ npm run pack
