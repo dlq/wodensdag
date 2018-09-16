@@ -43,7 +43,11 @@ $ npm run dist
 
 ## TODO
 
-A handful of features and interface tweaks.
+* Menus
+* Search
+* Filters
+* Notifications
+* Auto-update
 
 ## License
 

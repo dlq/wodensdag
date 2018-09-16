@@ -1,5 +1,6 @@
 const { shell } = require('electron')
 const jquery = require('jquery')
+// TODO: Do I need to use moment.js?
 var moment = require('moment')
 var ellipsis = require('text-ellipsis')
 
@@ -19,6 +20,7 @@ function getSchedule (date, callback) {
   const baseURL = 'https://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
 
+  // TODO: Should countries be in the settings?
   jquery.when(
     jquery.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
     jquery.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
