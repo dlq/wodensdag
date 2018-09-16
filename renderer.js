@@ -8,13 +8,11 @@ function getFav (f) {
 }
 
 function toggleFav (f) {
-  if (getFav(f)) { localStorage.removeItem(f.show.id) }
-  else { localStorage.setItem(f.show.id, 'fav') }
+  if (getFav(f)) { localStorage.removeItem(f.show.id) } else { localStorage.setItem(f.show.id, 'fav') }
 }
 
 function compareFav (a, b) {
-  if (getFav(a)) { return (getFav(b)) ? 0 : -1 }
-  else { return (getFav(b)) ? 1 : 0 }
+  if (getFav(a)) { return (getFav(b)) ? 0 : -1 } else { return (getFav(b)) ? 1 : 0 }
 }
 
 function getSchedule (date, callback) {
@@ -50,8 +48,7 @@ function getShow (name, callback) {
 }
 
 function getSeasonEpisodeString (s) {
-  if (!(s.season && s.number) || (s.season > 1900)) { return s.airdate.replace(/-/g, ' ') }
-  else { return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}` }
+  if (!(s.season && s.number) || (s.season > 1900)) { return s.airdate.replace(/-/g, ' ') } else { return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}` }
 }
 
 // TODO: Should the resolution be a preference?
