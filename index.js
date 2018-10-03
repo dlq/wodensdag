@@ -1,8 +1,6 @@
 const { shell } = require('electron')
 const jquery = require('jquery')
-// TODO: Do I need to use moment.js?
 var moment = require('moment')
-var ellipsis = require('text-ellipsis')
 
 function getFav (f) {
   return localStorage.getItem(f.show.id)
@@ -42,15 +40,19 @@ function getSchedule (date, callback) {
 
 function getShow (name, callback) {
   const torrentSearch = require('torrent-search-api')
-  torrentSearch.enableProvider('Rarbg')
   // TODO: Should there be settings for search providers?
+  torrentSearch.enableProvider('Rarbg')
   torrentSearch.search(name, 'TV', 1)
     .then((torrents) => { callback(torrents[0] ? torrents[0].magnet : '') })
     .catch((e) => { console.error(e) })
 }
 
 function getSeasonEpisodeString (s) {
-  if (!(s.season && s.number) || (s.season > 1900)) { return s.airdate.replace(/-/g, ' ') } else { return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}` }
+  if (!(s.season && s.number) || (s.season > 1900)) {
+    return s.airdate.replace(/-/g, ' ')
+  } else {
+    return `S${s.season.toString().padStart(2, '0')}E${s.number.toString().padStart(2, '0')}`
+  }
 }
 
 // TODO: Should the resolution be a preference?
@@ -76,25 +78,41 @@ function setContent (date) {
 
       // add img src
       scClone.find('#show-img').attr('src', s.show.image ? s.show.image.medium : '')
+        .attr('title', `${s.show.name}\n` +
+          `${s.airdate} ${s.airtime}\n` +
+          `${s.show.network.country.code} ${s.show.network.name}\n\n` +
+          `${s.show.summary.replace(/(<([^>]+)>)/ig,"")}`)
 
       // add show and episode names
-      scClone.find('#show-name').text(ellipsis(s.show.name, 30))
+      // scClone.find('#show-name').text(ellipsis(s.show.name, 30))
+      // scClone.find('#show-name').text(s.show.name)
       scClone.find('#episode').text(getSeasonEpisodeString(s))
-      scClone.find('#episode-name').text(ellipsis(s.name, 35))
+      scClone.find('#episode-name').text(s.name)
 
       // add tags
-      if (s.show.type !== 'Scripted') { s.show.genres.unshift(s.show.type) }
-      if (s.show.network) { s.show.genres.unshift(s.show.network.country.code) }
-      scClone.find('#show-tag-list').append(s.show.genres.join(' &middot; '))
+      // if (s.show.type !== 'Scripted') { s.show.genres.unshift(s.show.type) }
+      // if (s.show.network) { s.show.genres.unshift(s.show.network.country.code) }
+      // scClone.find('#show-tag-list').append(s.show.genres.join(' &middot; '))
+
+      // add episode window action
+      scClone.find('#show-episodes-window').click(() => {
+        const { BrowserWindow } = require('electron').remote
+        let win = new BrowserWindow({ width: 800, height: 600 })
+        win.on('closed', () => { win = null })
+        win.loadFile('./episodes.html')
+        win.webContents.on('did-finish-load', () => {
+          win.webContents.send('id', s.show.id)
+        })
+      })
 
       // add imdb button action
-      scClone.find('#show-imdb-link').click(() => {
-        if (!s.show.externals.imdb) {
-          shell.openExternal(`https://www.imdb.com/find?q=${s.show.name}`, { activate: false })
-        } else {
-          shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-        }
-      })
+      // scClone.find('#show-imdb-link').click(() => {
+        // if (!s.show.externals.imdb) {
+          // shell.openExternal(`https://www.imdb.com/find?q=${s.show.name}`, { activate: false })
+        // } else {
+          // shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
+        // }
+      // })
 
       // add fav button state and action
       if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-warning')
@@ -105,7 +123,7 @@ function setContent (date) {
         // TODO: Should the display refresh and re-sort with this new fav/unfav?
       })
 
-      // add mag button action
+      // add magnet button action
       scClone.find('#show-download-link').click(() => {
         const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
         getShow(searchName, (magnetLink) => {

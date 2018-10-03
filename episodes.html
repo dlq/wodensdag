@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div id="show-details" class="position-fixed mt-3"><!-- #show-details-template --></div>
+      </div>
+      <div class="col-8">
+        <div id="episode-list"><!-- #episode-list-template --></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Handlebars.js templates instead of straight HTML -->
+
+  <script id="show-details-template" type="text/x-handlebars-template">
+    <img class="rounded" src="{{image.medium}}" title="{{name}}">
+    <div class="mt-2">
+      <div hidden id="show-name">{{name}}</div><!-- this is a hack to embed the current show name -->
+      <div style="width: 200px;">
+        <span class="badge badge-info">{{type}}</span>
+        {{#each genres}}
+          <span class="badge badge-info">{{this}}</span>
+        {{/each}}
+      </div>
+      <div>
+        <span class="badge badge-secondary">{{network.country.code}}</span>
+        <span class="badge badge-secondary">{{network.name}}</span>
+      </div>
+      <div>
+        <span class="badge badge-dark">{{runtime}} minutes</span>
+      </div>
+    </div>
+  </script>
+
+  <script id="episode-list-template" type="text/x-handlebars-template">
+    <table class="table">
+      {{#each _embedded.episodes}}
+        <tr>
+          <td>
+            <button id="episode-magnet" type="button" class="btn btn-sm btn-link">
+              <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
+            </button>
+          </td>
+          <td id="episode-string">S{{zeropad season}}E{{zeropad number}}</td>
+          <td id="episode-airdate" class="text-muted" style="width: 8rem;">{{airdate}}</td>
+          <td id="episode-name">{{name}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </script>
+
+  <script>require('./episodes.js');</script>
+</body>
+
+</html>

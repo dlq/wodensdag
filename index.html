@@ -6,11 +6,30 @@
   <title>wodensdag</title>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    body {
+      hyphens: auto;
+      background: rgba(200,200,200,0.95);
+      -webkit-user-select: none;
+    }
+    nav {
+      -webkit-app-region: drag;
+    }
+    div.card {
+      min-width: 200px;
+      max-width: 200px;
+    }
+    /*
+    div.card-title, div.card-subtitle {
+      height: 4rem;
+    }
+    */
+  </style>
 </head>
 
-<body style="hyphens: auto; background: rgba(240,240,240,0.8); -webkit-user-select: none;">
+<body>
 
-  <nav class="navbar navbar-light bg-light fixed-top" style="-webkit-app-region: drag;">
+  <nav class="navbar navbar-light bg-light fixed-top">
     <span></span>
     <span></span>
     <span class="text-muted pt-1">
@@ -21,11 +40,6 @@
       <button id="date-next" type="button" class="btn btn-light pt-0">
         <i class="fas fa-angle-right" title="Next date"></i>
       </button>
-      <!--
-      <button id="search" type="menu" class="btn btn-light pt-0 dropdown">
-        <i class="fas fa-search"></i>
-      </button>
-      -->
     </span>
   </nav>
 
@@ -34,23 +48,30 @@
   </main>
 
   <template id="show-card">
-    <div class="card text-white bg-dark m-3" style="min-width: 200px; max-width: 200px;">
+    <div class="card text-white bg-dark m-3">
       <img id="show-img" class="card-img-top" src="">
       <div class="card-body">
-        <div id="show-name" class="card-title font-weight-bold" style="height: 3rem;"></div>
+        <!--
+        <div id="show-name" class="card-title font-weight-light"></div>
         <small>
-          <div id="show-tag-list" class="card-subtitle font-weight-light text-warning" style="height: 2rem;"></div>
+          <div id="show-tag-list" class="card-subtitle font-weight-light text-warning"></div>
         </small>
-        <div class="mt-4" style="max-height: 4rem;">
+        -->
+        <div class="card-text font-weight-bold">
           <small><span id="episode"></span></small>
           &middot;
-          <span id="episode-name" class="font-weight-light"></span>
+          <span id="episode-name"></span>
         </div>
       </div>
       <div class="card-footer text-right">
+        <button id="show-episodes-window" type="button" class="btn btn-dark btn-sm">
+          <i class="fas fa-list-ul"></i>
+        </button>
+        <!--
         <button id="show-imdb-link" type="button" class="btn btn-dark btn-sm">
           <i class="fab fa-imdb fa-lg" title="Open IMDb link"></i>
         </button>
+        -->
         <button id="show-fav" type="button" class="btn btn-dark btn-sm mx-1">
           <i class="far fa-star" title="Favourite"></i>
         </button>
@@ -61,7 +82,7 @@
     </div>
   </template>
 
-  <script>require('./renderer.js');</script>
+  <script>require('./index.js');</script>
 </body>
 
 </html>
