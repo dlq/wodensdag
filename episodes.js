@@ -41,7 +41,8 @@ ipc.on('id', (_, id) => {
             } else if (!shell.openExternal(magnetLink, { activate: false })) {
               alert('Do you have a torrent client app installed?' + '  ' +
                 'There\'s some good ones out there.  Right now, I kind of like WebTorrent.')
-            } })
+            }
+          })
           .catch((err) => { console.error(err) })
       })
     })

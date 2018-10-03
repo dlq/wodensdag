@@ -81,18 +81,11 @@ function setContent (date) {
         .attr('title', `${s.show.name}\n` +
           `${s.airdate} ${s.airtime}\n` +
           `${s.show.network.country.code} ${s.show.network.name}\n\n` +
-          `${s.show.summary.replace(/(<([^>]+)>)/ig,"")}`)
+          `${s.show.summary.replace(/(<([^>]+)>)/ig, '')}`)
 
       // add show and episode names
-      // scClone.find('#show-name').text(ellipsis(s.show.name, 30))
-      // scClone.find('#show-name').text(s.show.name)
       scClone.find('#episode').text(getSeasonEpisodeString(s))
       scClone.find('#episode-name').text(s.name)
-
-      // add tags
-      // if (s.show.type !== 'Scripted') { s.show.genres.unshift(s.show.type) }
-      // if (s.show.network) { s.show.genres.unshift(s.show.network.country.code) }
-      // scClone.find('#show-tag-list').append(s.show.genres.join(' &middot; '))
 
       // add episode window action
       scClone.find('#show-episodes-window').click(() => {
@@ -104,15 +97,6 @@ function setContent (date) {
           win.webContents.send('id', s.show.id)
         })
       })
-
-      // add imdb button action
-      // scClone.find('#show-imdb-link').click(() => {
-        // if (!s.show.externals.imdb) {
-          // shell.openExternal(`https://www.imdb.com/find?q=${s.show.name}`, { activate: false })
-        // } else {
-          // shell.openExternal(`https://www.imdb.com/title/${s.show.externals.imdb}/`, { activate: false })
-        // }
-      // })
 
       // add fav button state and action
       if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-warning')
