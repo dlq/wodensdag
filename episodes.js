@@ -3,8 +3,12 @@ const ipc = require('electron').ipcRenderer
 const jquery = require('jquery')
 const handlebars = require('handlebars')
 
-handlebars.registerHelper('zeropad', (n) => {
-  return (n < 10) ? '0' + n : n
+handlebars.registerHelper('episode-string', (season, number, airdate) => {
+  if (!(season && number) || (season > 1900)) {
+    return airdate.replace(/-/g, ' ')
+  } else {
+    return `S${season.toString().padStart(2, '0')}E${number.toString().padStart(2, '0')}`
+  }
 })
 
 // TODO:  Refactor all the tings.
@@ -26,10 +30,11 @@ ipc.on('id', (_, id) => {
 
     // add magnet button actions
     jquery('tr').each((_, el) => {
-      const showName = jquery(el).find('#show-name').text()
+      const showName = jquery('#show-name').text()
       const episodeString = jquery(el).find('#episode-string').text()
       const episodeResolution = '720p'
       const searchName = `${showName.replace(/[^ \w]/g, '')} ${episodeString} ${episodeResolution}`
+      console.log(searchName)
       jquery(el).find('#episode-magnet').click(() => {
         const torrentSearch = require('torrent-search-api')
         torrentSearch.enableProvider('Rarbg')
