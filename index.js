@@ -90,7 +90,7 @@ function setContent (date) {
       // add episode window action
       scClone.find('#show-episodes-window').click(() => {
         const { BrowserWindow } = require('electron').remote
-        let win = new BrowserWindow({ width: 800, height: 600 })
+        let win = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
         win.on('closed', () => { win = null })
         win.loadFile('./episodes.html')
         win.webContents.on('did-finish-load', () => {
