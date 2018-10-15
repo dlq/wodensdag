@@ -77,11 +77,9 @@ function setContent (date) {
       var scClone = jquery('template#show-card').contents().clone() // new card
 
       // add img src
-      scClone.find('#show-img').attr('src', s.show.image ? s.show.image.medium : '')
-        .attr('title', `${s.show.name}\n` +
-          `${s.airdate} ${s.airtime}\n` +
-          `${s.show.network.country.code} ${s.show.network.name}\n\n` +
-          `${s.show.summary.replace(/(<([^>]+)>)/ig, '')}`)
+      scClone.find('#show-img')
+        .attr('src', s.show.image ? s.show.image.medium : '')
+        .attr('title', s.show.name)
 
       // add show and episode names
       scClone.find('#episode').text(getSeasonEpisodeString(s))
