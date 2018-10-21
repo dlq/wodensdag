@@ -9,7 +9,6 @@
   <style>
     body {
       hyphens: auto;
-      background: rgb(160,160,160);
       -webkit-user-select: none;
     }
     nav {
@@ -22,7 +21,7 @@
   </style>
 </head>
 
-<body>
+<body class="bg-secondary">
   <nav class="navbar navbar-light bg-light pb-1 fixed-top">
     <span></span>
     <span></span>
@@ -34,16 +33,22 @@
       <button id="date-next" type="button" class="btn btn-light mb-2">
         <i class="fas fa-angle-right" title="Next date"></i>
       </button>
+      <button id="search" type="button" class="btn btn-light ml-5 mb-2">
+        <i class="fas fa-search" title="Search"></i>
+      </button>
     </span>
   </nav>
 
   <main class="container-fluid mt-5">
-    <div id="show-list" class="card-deck mx-1 mb-4 pt-4"></div>
+    <div id="show-list" class="card-deck mx-1 mb-4 pt-4">
+      <!-- fill with show-cards -->
+      <!-- TODO: Show loading message. -->
+    </div>
   </main>
 
   <template id="show-card">
     <div class="card text-white bg-dark border-secondary m-3">
-      <img id="show-img" class="card-img-top rounded mt-4 ml-4" style="width: 150px;">
+      <img id="show-img" class="card-img-top rounded mt-4 ml-4" height="210" style="width: 150px;">
       <div class="card-body">
         <div id="episode-head" class="card-text font-weight-bold">
           <small><span class="text-warning" id="episode"></span></small>
@@ -52,11 +57,11 @@
         </div>
       </div>
       <div class="card-footer text-right">
-        <button id="show-episodes-window" type="button" class="btn btn-dark btn-sm">
-          <i class="fas fa-list-ul"></i>
-        </button>
-        <button id="show-fav" type="button" class="btn btn-dark btn-sm mx-1">
+        <button id="show-fav" type="button" class="btn btn-dark btn-sm">
           <i class="far fa-star" title="Favourite"></i>
+        </button>
+        <button id="show-episodes-window" type="button" class="btn btn-dark btn-sm mx-1">
+          <i class="fas fa-list-ul"></i>
         </button>
         <button id="show-download-link" type="button" class="btn btn-dark btn-sm">
           <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>

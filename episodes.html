@@ -16,14 +16,19 @@
   </style>
 </head>
 
-<body class="bg-dark">
-  <div id="container" class="container pt-5">
+<body class="bg-dark text-white">
+  <div class="container pt-5">
     <div class="row">
       <div class="col-4">
-        <div id="show-details" class="position-fixed mt-3"><!-- #show-details-template --></div>
+        <div id="show-details" class="position-fixed mt-3">
+          <span class="text-secondary">Loading...</span>
+          <!-- #show-details-template -->
+        </div>
       </div>
       <div class="col-8">
-        <div id="episode-list"><!-- #episode-list-template --></div>
+        <div id="episode-list">
+          <!-- #episode-list-template -->
+        </div>
       </div>
     </div>
   </div>
@@ -32,10 +37,10 @@
   <!-- TODO: Should I go back to index.html and refactor it to use this templating? -->
 
   <script id="show-details-template" type="text/x-handlebars-template">
-    <img class="rounded" src="{{image.medium}}" title="{{name}}">
+    <img class="rounded" src="{{image.medium}}" title="{{name}}" width="210" height="295">
     <div class="mt-2" style="width: 200px;">
       <div hidden id="show-name">{{name}}</div><!-- this is a hack to embed the current show name -->
-      <div class="text-white">
+      <div>
         <small>
           <b>
             <span>{{type}}</span>
@@ -66,7 +71,7 @@
   </script>
 
   <script id="episode-list-template" type="text/x-handlebars-template">
-    <table class="table table-borderless text-white">
+    <table class="table table-borderless">
       {{#each episodes}}
         <tr>
           <td id="" class="px-0" style="width: 1rem;">

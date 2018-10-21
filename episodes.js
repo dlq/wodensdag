@@ -31,9 +31,6 @@ ipc.on('id', (_, id) => {
     var listHtml = listTemplate(episodes)
     jquery('#episode-list').html(listHtml)
 
-    // scroll to bottom of the episode list
-    jquery('html, body').scrollTop(jquery('html, body').height())
-
     // add magnet button actions
     jquery('tr').each((_, el) => {
       const showName = jquery('#show-name').text().trim()
@@ -62,6 +59,10 @@ ipc.on('id', (_, id) => {
           })
       })
     })
+
+    // scroll to bottom of the episode list
+    // TODO: This isn't scrolling all the way for some windows.
+    jquery('html, body').scrollTop(jquery('html, body').height())
   })
   // TODO: I'm not handling if there's no data returned.
 })

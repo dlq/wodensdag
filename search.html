@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <style>
+    body {
+      -webkit-app-region: drag;
+      -webkit-user-select: none;
+    }
+    nav {
+      -webkit-app-region: drag;
+    }
+  </style>
+</head>
+
+<body class="bg-secondary">
+  <nav class="navbar navbar-light bg-light fixed-top">
+    <span></span>
+    <span class="w-50">
+      <input id="search-field" type="text" class="form-control" placeholder="Search">
+    </span>
+    <span></span>
+  </nav>
+
+  <div class="container">
+    <div id="search-results" class="text-white pt-5">
+      <!-- #search-results-template -->
+    </div>
+  </div>
+
+  <script id="search-results-template" type="text/x-handlebars-template">
+    {{#each this}}
+      <div id="search-results-details" class="media my-5">
+        <img class="rounded" src="{{show.image.medium}}" title="{{show.name}}" width=140>
+        <div class="media-body ml-4">
+            <h5>{{show.name}}</h5>
+            <div hidden id="show-id">{{show.id}}</div>
+            <div class="row mb-2">
+              <div class="col">
+                <small>
+                  <b>
+                    <div>
+                      <span>{{show.type}}</span>
+                      {{#each show.genres}}
+                        &middot;
+                        <span>{{this}}</span>
+                      {{/each}}
+                    </div>
+                    <div class="text-warning">
+                      <span>{{show.network.country.code}}</span>
+                      &middot;
+                      <span>{{show.network.name}}</span>
+                    </div>
+                  </b>
+                </small>
+              </div>
+              <div class="col text-right">
+                <button id="show-episodes-window" type="button" class="btn btn-secondary btn-sm mx-1">
+                  <i class="fas fa-list-ul"></i>
+                </button>
+              </div>
+            </div>
+            {{{show.summary}}}
+        </div>
+      </div>
+    {{/each}}
+  </script>
+
+  <script>require('./search.js');</script>
+</body>
+
+</html>

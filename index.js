@@ -66,13 +66,19 @@ function setContent (date) {
   // TODO: Should the next button be disabled when it's today?
   jquery('#date-next').off('click')
     .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
+  jquery('#search').click(() => {
+    const { BrowserWindow } = require('electron').remote
+    let swin = new BrowserWindow({ width: 800, height: 1000, titleBarStyle: 'hiddenInset' })
+    swin.on('closed', () => { swin = null })
+    swin.loadFile('./search.html')
+  })
 
   // start with an empty list
   jquery('#show-list').empty()
 
   getSchedule(date, (schedule) => {
     schedule.forEach((s) => {
-      if (!s.show.image) { return } // skip if there's no img
+      // if (!s.show.image) { return } // skip if there's no img
 
       var scClone = jquery('template#show-card').contents().clone() // new card
 
@@ -88,11 +94,11 @@ function setContent (date) {
       // add episode window action
       scClone.find('#show-episodes-window').click(() => {
         const { BrowserWindow } = require('electron').remote
-        let win = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
-        win.on('closed', () => { win = null })
-        win.loadFile('./episodes.html')
-        win.webContents.on('did-finish-load', () => {
-          win.webContents.send('id', s.show.id)
+        let ewin = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
+        ewin.on('closed', () => { ewin = null })
+        ewin.loadFile('./episodes.html')
+        ewin.webContents.on('did-finish-load', () => {
+          ewin.webContents.send('id', s.show.id)
         })
       })
 
