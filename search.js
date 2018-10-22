@@ -2,6 +2,7 @@ const jquery = require('jquery')
 const handlebars = require('handlebars')
 
 jquery(document).ready(() => {
+  jquery('input').focus()
   jquery('input').keyup((e) => {
     if (e.keyCode === 13) {
       jquery('input').trigger('enterKey')
@@ -15,10 +16,8 @@ jquery(document).ready(() => {
       var resultsHtml = resultsTemplate(data)
       jquery('#search-results').html(resultsHtml)
 
-      console.log('foo')
       jquery('div#search-results-details').each((_, el) => {
         const showId = jquery(el).find('#show-id').text().trim()
-        console.log(showId)
         jquery(el).find('#show-episodes-window').click(() => {
           const { BrowserWindow } = require('electron').remote
           let win = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })

@@ -26,46 +26,55 @@
   </nav>
 
   <div class="container">
-    <div id="search-results" class="text-white pt-5">
+    <div id="search-results" class="text-white mt-5 pt-5">
       <!-- #search-results-template -->
     </div>
   </div>
 
   <script id="search-results-template" type="text/x-handlebars-template">
     {{#each this}}
-      <div id="search-results-details" class="media my-5">
+      <div id="search-results-details" class="media">
         <img class="rounded" src="{{show.image.medium}}" title="{{show.name}}" width=140>
         <div class="media-body ml-4">
-            <h5>{{show.name}}</h5>
-            <div hidden id="show-id">{{show.id}}</div>
-            <div class="row mb-2">
-              <div class="col">
-                <small>
-                  <b>
-                    <div>
-                      <span>{{show.type}}</span>
-                      {{#each show.genres}}
-                        &middot;
-                        <span>{{this}}</span>
-                      {{/each}}
-                    </div>
-                    <div class="text-warning">
+          <h5>{{show.name}}</h5>
+          <div hidden id="show-id">{{show.id}}</div>
+          <div class="row mb-2">
+            <div class="col">
+              <small>
+                <b>
+                  <div>
+                    <span>{{show.type}}</span>
+                    {{#each show.genres}}
+                      &middot;
+                      <span>{{this}}</span>
+                    {{/each}}
+                  </div>
+                  <div class="text-warning">
+                    {{#if show.network}}
                       <span>{{show.network.country.code}}</span>
                       &middot;
                       <span>{{show.network.name}}</span>
-                    </div>
-                  </b>
-                </small>
-              </div>
-              <div class="col text-right">
-                <button id="show-episodes-window" type="button" class="btn btn-secondary btn-sm mx-1">
-                  <i class="fas fa-list-ul"></i>
-                </button>
-              </div>
+                    {{else}}
+                      {{#if show.webChannel.country}}
+                        <span>{{show.webChannel.country.code}}</span>
+                        &middot;
+                      {{/if}}
+                      <span>{{show.webChannel.name}}</span> 
+                    {{/if}}
+                  </div>
+                </b>
+              </small>
             </div>
-            {{{show.summary}}}
+            <div class="col text-right">
+              <button id="show-episodes-window" type="button" class="btn btn-secondary btn-sm mx-1">
+                <i class="fas fa-list-ul"></i>
+              </button>
+            </div>
+          </div>
+          {{{show.summary}}}
         </div>
       </div>
+      <hr>
     {{/each}}
   </script>
 

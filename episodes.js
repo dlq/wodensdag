@@ -32,11 +32,12 @@ ipc.on('id', (_, id) => {
     jquery('#episode-list').html(listHtml)
 
     // add magnet button actions
-    jquery('tr').each((_, el) => {
+    jquery('div#episode-details').each((_, el) => {
       const showName = jquery('#show-name').text().trim()
       const episodeString = jquery(el).find('#episode-string').text().trim()
       const episodeResolution = '720p' // TODO: Should resolution be in settings?
       const searchName = `${showName.replace(/[^ \w]/g, '')} ${episodeString} ${episodeResolution}`
+      console.log(searchName)
       jquery(el).find('#episode-magnet').click(() => {
         const torrentSearch = require('torrent-search-api')
         torrentSearch.enableProvider('Rarbg') // TODO: Should provider be in settings?
@@ -61,7 +62,6 @@ ipc.on('id', (_, id) => {
     })
 
     // scroll to bottom of the episode list
-    // TODO: This isn't scrolling all the way for some windows.
     jquery('html, body').scrollTop(jquery('html, body').height())
   })
   // TODO: I'm not handling if there's no data returned.

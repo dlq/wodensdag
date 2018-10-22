@@ -40,58 +40,57 @@
     <img class="rounded" src="{{image.medium}}" title="{{name}}" width="210" height="295">
     <div class="mt-2" style="width: 200px;">
       <div hidden id="show-name">{{name}}</div><!-- this is a hack to embed the current show name -->
-      <div>
-        <small>
-          <b>
+      <small>
+        <b>
+          <div>
             <span>{{type}}</span>
             {{#each genres}}
               &middot;
               <span>{{this}}</span>
             {{/each}}
-          </b>
-        </small>
-      </div>
-      <div class="text-warning">
-        <small>
-          <b>
-            <span>{{network.country.code}}</span>
-            &middot;
-            <span>{{network.name}}</span>
-          </b>
-        </small>
-      </div>
-      <div class="text-warning">
-        <small>
-          <b>
+          </div>
+          <div class="text-warning">
+            {{#if network}}
+              <span>{{network.country.code}}</span>
+              &middot;
+              <span>{{network.name}}</span>
+            {{else}}
+              {{#if webChannel.country}}
+                <span>{{webChannel.country.code}}</span>
+                &middot;
+              {{/if}}
+              <span>{{webChannel.name}}</span> 
+            {{/if}}
+          </div>
+          <div class="text-warning">
             <span>{{runtime}} minutes</span>
-          </b>
-        </small>
-      </div>
+          </div>
+        </b>
+      </small>
     </div>
   </script>
 
   <script id="episode-list-template" type="text/x-handlebars-template">
-    <table class="table table-borderless">
-      {{#each episodes}}
-        <tr>
-          <td id="" class="px-0" style="width: 1rem;">
-            <button id="episode-magnet" type="button" class="btn btn-sm btn-link pt-0">
+    {{#each episodes}}
+      <div id="episode-details" class="mb-3">
+        <div class="mb-3">
+          <small id="episode-string" class="text-warning">{{episode-string season number airdate}}</small>
+          &middot; <b id="show-name">{{name}}</b>
+        </div>
+        {{{summary}}}
+        <div class="row">
+          <div class="col">
+            <small class="text-muted">{{airdate}}</small>
+          </div>
+          <div class="col text-right">
+            <button id="episode-magnet" type="button" class="btn btn-dark btn-sm">
               <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
             </button>
-          </td>
-          <td id="episode-string" class="text-warning" style="width: 6rem;">
-            <small>{{episode-string season number airdate}}</small>
-          </td>
-          <td id="episode-name" class="px-0">
-            <b>{{name}}</b>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td colspan="2" class="mt-0 pt-0">{{{summary}}} <small class="text-muted">{{airdate}}</small></td>
-        </tr>
-      {{/each}}
-    </table>
+          </div>
+        </div>
+        <hr>
+      </div>
+    {{/each}}
   </script>
 
   <script>require('./episodes.js');</script>
