@@ -6,7 +6,8 @@ let mainWindow
 function createWindow () {
   let mainWindowState = windowStateKeeper({
     defaultWidth: 990,
-    defaultHeight: 1024
+    defaultHeight: 1024,
+    file: 'main-window-state.json'
   })
 
   mainWindow = new BrowserWindow({
@@ -14,13 +15,12 @@ function createWindow () {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
-    titleBarStyle: 'hiddenInset',
-    transparent: true
+    titleBarStyle: 'hiddenInset'
   })
 
   mainWindowState.manage(mainWindow)
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('src/index.html')
 
   mainWindow.on('closed', function () {
     mainWindow = null

@@ -68,9 +68,27 @@ function setContent (date) {
     .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
   jquery('#search').click(() => {
     const { BrowserWindow } = require('electron').remote
-    let swin = new BrowserWindow({ width: 800, height: 1000, titleBarStyle: 'hiddenInset' })
-    swin.on('closed', () => { swin = null })
-    swin.loadFile('./search.html')
+    const windowStateKeeper = require('electron-window-state')
+
+    let searchWindowState = windowStateKeeper({
+      defaultWidth: 800,
+      defaultHeight: 1000,
+      file: 'search-window-state.json'
+    })
+
+    let searchWindow = new BrowserWindow({
+      x: searchWindowState.x,
+      y: searchWindowState.y,
+      width: searchWindowState.width,
+      height: searchWindowState.height,
+      titleBarStyle: 'hiddenInset'
+    })
+
+    searchWindowState.manage(searchWindow)
+
+    searchWindow.loadFile('./src/search.html')
+
+    searchWindow.on('closed', () => { searchWindow = null })
   })
 
   // start with an empty list
@@ -80,31 +98,32 @@ function setContent (date) {
     schedule.forEach((s) => {
       // if (!s.show.image) { return } // skip if there's no img
 
-      var scClone = jquery('template#show-card').contents().clone() // new card
+      var showCardClone = jquery('template#show-card').contents().clone() // new card
 
       // add img src
-      scClone.find('#show-img')
+      showCardClone.find('#show-img')
         .attr('src', s.show.image ? s.show.image.medium : '')
         .attr('title', s.show.name)
 
       // add show and episode names
-      scClone.find('#episode').text(getSeasonEpisodeString(s))
-      scClone.find('#episode-name').text(s.name)
+      showCardClone.find('#episode').text(getSeasonEpisodeString(s))
+      showCardClone.find('#episode-name').text(s.name)
 
       // add episode window action
-      scClone.find('#show-episodes-window').click(() => {
+      showCardClone.find('#show-episodes-window').click(() => {
+        // TODO: This should be refactored.  And I should figure out window management.
         const { BrowserWindow } = require('electron').remote
-        let ewin = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
-        ewin.on('closed', () => { ewin = null })
-        ewin.loadFile('./episodes.html')
-        ewin.webContents.on('did-finish-load', () => {
-          ewin.webContents.send('id', s.show.id)
+        let episodeWindow = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
+        episodeWindow.on('closed', () => { episodeWindow = null })
+        episodeWindow.loadFile('./src/episodes.html')
+        episodeWindow.webContents.on('did-finish-load', () => {
+          episodeWindow.webContents.send('id', s.show.id)
         })
       })
 
       // add fav button state and action
-      if (getFav(s)) scClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-warning')
-      scClone.find('#show-fav').click((event) => {
+      if (getFav(s)) showCardClone.find('#show-fav > i').toggleClass('fas').toggleClass('text-warning')
+      showCardClone.find('#show-fav').click((event) => {
         toggleFav(s)
         jquery(event.currentTarget).children()
           .toggleClass('fas').toggleClass('text-warning')
@@ -112,7 +131,7 @@ function setContent (date) {
       })
 
       // add magnet button action
-      scClone.find('#show-download-link').click(() => {
+      showCardClone.find('#show-download-link').click(() => {
         const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
         getShow(searchName, (magnetLink) => {
           if (!magnetLink) {
@@ -125,7 +144,7 @@ function setContent (date) {
         })
       })
 
-      jquery('#show-list').append(scClone) // add new card
+      jquery('#show-list').append(showCardClone) // add new card
     })
   })
 }

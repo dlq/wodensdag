@@ -44,7 +44,6 @@ $ npm run dist
 ## TODO
 
 * Menus
-* Filters
 * Notifications
 * Auto-update
 

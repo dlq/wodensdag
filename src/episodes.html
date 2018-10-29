@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
     body {
       -webkit-app-region: drag;
@@ -18,14 +18,15 @@
 
 <body class="bg-dark text-white">
   <div class="container pt-5">
-    <div class="row">
+    <!-- TODO: The columns aren't resizing nicely. -->
+    <div class="row justify-content-center">
       <div class="col-4">
         <div id="show-details" class="position-fixed mt-3">
-          <span class="text-secondary">Loading...</span>
           <!-- #show-details-template -->
+          <span class="text-secondary">Loading...</span>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col">
         <div id="episode-list">
           <!-- #episode-list-template -->
         </div>
@@ -38,7 +39,7 @@
 
   <script id="show-details-template" type="text/x-handlebars-template">
     <img class="rounded" src="{{image.medium}}" title="{{name}}" width="210" height="295">
-    <div class="mt-2" style="width: 200px;">
+    <div class="mt-2" style="width: 210px;">
       <div hidden id="show-name">{{name}}</div><!-- this is a hack to embed the current show name -->
       <small>
         <b>
@@ -62,7 +63,7 @@
               <span>{{webChannel.name}}</span> 
             {{/if}}
           </div>
-          <div class="text-warning">
+          <div class="text-secondary">
             <span>{{runtime}} minutes</span>
           </div>
         </b>
@@ -72,24 +73,26 @@
 
   <script id="episode-list-template" type="text/x-handlebars-template">
     {{#each episodes}}
-      <div id="episode-details" class="mb-3">
-        <div class="mb-3">
-          <small id="episode-string" class="text-warning">{{episode-string season number airdate}}</small>
-          &middot; <b id="show-name">{{name}}</b>
-        </div>
-        {{{summary}}}
-        <div class="row">
-          <div class="col">
-            <small class="text-muted">{{airdate}}</small>
+      {{#if airdate}}
+        <div id="episode-details" class="mb-3">
+          <div class="mb-3">
+            <small id="episode-string" class="text-warning">{{episode-string season number airdate}}</small>
+            &middot; <b id="show-name">{{name}}</b>
           </div>
-          <div class="col text-right">
-            <button id="episode-magnet" type="button" class="btn btn-dark btn-sm">
-              <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
-            </button>
+          {{{summary}}}
+          <div class="row">
+            <div class="col">
+              <small class="text-muted">{{airdate}}</small>
+            </div>
+            <div class="col text-right">
+              <button id="episode-magnet" type="button" class="btn btn-dark btn-sm">
+                <i class="fas fa-cloud-download-alt" title="Open magnet link"></i>
+              </button>
+            </div>
           </div>
+          <hr>
         </div>
-        <hr>
-      </div>
+      {{/if}}
     {{/each}}
   </script>
 
