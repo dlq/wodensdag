@@ -67,15 +67,14 @@ function setContent (date) {
   jquery('#date-next').off('click')
     .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
   jquery('#search').click(() => {
+    // FIXME: This is "stacking" clicks everytime it's called.
     const { BrowserWindow } = require('electron').remote
     const windowStateKeeper = require('electron-window-state')
-
     let searchWindowState = windowStateKeeper({
-      defaultWidth: 800,
-      defaultHeight: 1000,
+      defaultWidth: 770,
+      defaultHeight: 900,
       file: 'search-window-state.json'
     })
-
     let searchWindow = new BrowserWindow({
       x: searchWindowState.x,
       y: searchWindowState.y,
@@ -83,11 +82,8 @@ function setContent (date) {
       height: searchWindowState.height,
       titleBarStyle: 'hiddenInset'
     })
-
     searchWindowState.manage(searchWindow)
-
     searchWindow.loadFile('./src/search.html')
-
     searchWindow.on('closed', () => { searchWindow = null })
   })
 

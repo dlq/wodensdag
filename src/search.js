@@ -19,13 +19,13 @@ jquery(document).ready(() => {
       jquery('div#search-results-details').each((_, el) => {
         const showId = jquery(el).find('#show-id').text().trim()
         jquery(el).find('#show-episodes-window').click(() => {
-          // TODO: This should be refactored.  And I should figure out window management.
+          // TODO: This should be refactored.
           const { BrowserWindow } = require('electron').remote
-          let win = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
-          win.on('closed', () => { win = null })
-          win.loadFile('./src/episodes.html')
-          win.webContents.on('did-finish-load', () => {
-            win.webContents.send('id', showId)
+          let episodeWindow = new BrowserWindow({ width: 800, height: 600, titleBarStyle: 'hiddenInset' })
+          episodeWindow.on('closed', () => { episodeWindow = null })
+          episodeWindow.loadFile('./src/episodes.html')
+          episodeWindow.webContents.on('did-finish-load', () => {
+            episodeWindow.webContents.send('id', showId)
           })
         })
       })
