@@ -61,13 +61,14 @@ const resolution = '720p'
 function setContent (date) {
   // add info and actions to navbar
   jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
-  jquery('#date-previous').off('click')
-    .one('click', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
+  jquery('#date-previous').off('click').one('click', () => {
+    setContent(moment(date).subtract(1, 'days').toDate())
+  })
   // TODO: Should the next button be disabled when it's today?
-  jquery('#date-next').off('click')
-    .one('click', () => { setContent(moment(date).add(1, 'days').toDate()) })
-  jquery('#search').click(() => {
-    // FIXME: This is "stacking" clicks everytime it's called.
+  jquery('#date-next').off('click').one('click', () => {
+    setContent(moment(date).add(1, 'days').toDate())
+  })
+  jquery('#search').off('click').one('click', () => {
     const { BrowserWindow } = require('electron').remote
     const windowStateKeeper = require('electron-window-state')
     let searchWindowState = windowStateKeeper({
