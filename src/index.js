@@ -68,7 +68,7 @@ function setContent (date) {
   jquery('#date-next').off('click').one('click', () => {
     setContent(moment(date).add(1, 'days').toDate())
   })
-  jquery('#search').off('click').one('click', () => {
+  jquery('#search').off('click').on('click', () => {
     const { BrowserWindow } = require('electron').remote
     const windowStateKeeper = require('electron-window-state')
     let searchWindowState = windowStateKeeper({
