@@ -1,4 +1,5 @@
 const { shell } = require('electron')
+const ipc = require('electron').ipcRenderer
 const jquery = require('jquery')
 var moment = require('moment')
 
@@ -69,24 +70,11 @@ function setContent (date) {
     setContent(moment(date).add(1, 'days').toDate())
   })
   jquery('#search').off('click').on('click', () => {
-    const { BrowserWindow } = require('electron').remote
-    const windowStateKeeper = require('electron-window-state')
-    let searchWindowState = windowStateKeeper({
-      defaultWidth: 770,
-      defaultHeight: 900,
-      file: 'search-window-state.json'
-    })
-    let searchWindow = new BrowserWindow({
-      x: searchWindowState.x,
-      y: searchWindowState.y,
-      width: searchWindowState.width,
-      height: searchWindowState.height,
-      titleBarStyle: 'hiddenInset'
-    })
-    searchWindowState.manage(searchWindow)
-    searchWindow.loadFile('./src/search.html')
-    searchWindow.on('closed', () => { searchWindow = null })
+    newSearchWindow()
   })
+
+  ipc.once('right', () => { setContent(moment(date).add(1, 'days').toDate()) })
+  ipc.once('left', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
 
   // start with an empty list
   jquery('#show-list').empty()
@@ -146,4 +134,27 @@ function setContent (date) {
   })
 }
 
-setContent(moment().subtract(1, 'days').toDate())
+var yesterday = moment().subtract(1, 'days').toDate()
+setContent(yesterday)
+
+ipc.on('search', () => { newSearchWindow() })
+
+function newSearchWindow () {
+  const { BrowserWindow } = require('electron').remote
+  const windowStateKeeper = require('electron-window-state')
+  let searchWindowState = windowStateKeeper({
+    defaultWidth: 770,
+    defaultHeight: 900,
+    file: 'search-window-state.json'
+  })
+  let searchWindow = new BrowserWindow({
+    x: searchWindowState.x,
+    y: searchWindowState.y,
+    width: searchWindowState.width,
+    height: searchWindowState.height,
+    titleBarStyle: 'hiddenInset'
+  })
+  searchWindowState.manage(searchWindow)
+  searchWindow.loadFile('./src/search.html')
+  searchWindow.on('closed', () => { searchWindow = null })
+}

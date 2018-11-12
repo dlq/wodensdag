@@ -39,10 +39,16 @@ const menuTemplate = [
   {
     label: 'Go',
     submenu: [
-      { label: 'Tomorrow' },
-      { label: 'Yesterday' },
+      { label: 'Tomorrow',
+        accelerator: 'CmdOrCtrl+Right',
+        click: () => { mainWindow.webContents.send('right') } },
+      { label: 'Yesterday',
+        accelerator: 'CmdOrCtrl+Left',
+        click: () => { mainWindow.webContents.send('left') } },
       { type: 'separator' },
-      { label: 'Search' }
+      { label: 'Search',
+        accelerator: 'CmdOrCtrl+S',
+        click: () => { mainWindow.webContents.send('search') } }
     ]
   },
   {
