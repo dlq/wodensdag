@@ -14,7 +14,7 @@
     "torrents"
   ],
   "scripts": {
-    "start": "electron .",
+    "start": "electron --inspect .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --mac --win"
   },

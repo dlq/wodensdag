@@ -73,7 +73,10 @@ function setContent (date) {
     newSearchWindow()
   })
 
+  // add the correct listeners for right and left arrow keystrokes
+  ipc.removeAllListeners('right')
   ipc.once('right', () => { setContent(moment(date).add(1, 'days').toDate()) })
+  ipc.removeAllListeners('left')
   ipc.once('left', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
 
   // start with an empty list
