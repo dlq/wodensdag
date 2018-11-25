@@ -2,7 +2,6 @@ const jquery = require('jquery')
 const handlebars = require('handlebars')
 
 jquery(document).ready(() => {
-  console.log('foo')
   jquery('input').focus()
   jquery('input').keyup((e) => {
     if (e.keyCode === 13) {
@@ -16,6 +15,7 @@ jquery(document).ready(() => {
       const resultsTemplate = handlebars.compile(resultsSource)
       var resultsHtml = resultsTemplate(data)
       jquery('#search-results').html(resultsHtml)
+      document.title = `${e.target.value}`
       jquery('div#search-results-details').each((_, el) => {
         const showId = jquery(el).find('#show-id').text().trim()
         jquery(el).find('#show-episodes-window').click(() => {

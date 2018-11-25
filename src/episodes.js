@@ -3,6 +3,8 @@ const ipc = require('electron').ipcRenderer
 const jquery = require('jquery')
 const handlebars = require('handlebars')
 const moment = require('moment')
+const Store = require('electron-store')
+const store = new Store()
 
 handlebars.registerHelper('episode-string', (season, number, airdate) => {
   if (!(season && number) || (season > 1900)) {
@@ -15,6 +17,8 @@ handlebars.registerHelper('episode-string', (season, number, airdate) => {
 ipc.on('id', (_, id) => {
   const baseURL = 'https://api.tvmaze.com'
   jquery.getJSON(`${baseURL}/shows/${id}?embed=episodes`, (data) => {
+    document.title = data.name
+
     // fill in show details column
     const detailsSource = jquery('#show-details-template').html()
     const detailsTemplate = handlebars.compile(detailsSource)
@@ -35,12 +39,11 @@ ipc.on('id', (_, id) => {
     jquery('div#episode-details').each((_, el) => {
       const showName = jquery('#show-name').text().trim()
       const episodeString = jquery(el).find('#episode-string').text().trim()
-      const episodeResolution = '720p' // TODO: Should resolution be in settings?
-      const searchName = `${showName.replace(/[^ \w]/g, '')} ${episodeString} ${episodeResolution}`
-      console.log(searchName)
+      // TODO: Changing the resolution while the window is open doesn't change the resolution
+      const searchName = `${showName.replace(/[^ \w]/g, '')} ${episodeString} ${store.get('resolution', '720p')}`
       jquery(el).find('#episode-magnet').click(() => {
         const torrentSearch = require('torrent-search-api')
-        torrentSearch.enableProvider('Rarbg') // TODO: Should provider be in settings?
+        torrentSearch.enableProvider('Rarbg')
         torrentSearch.search(searchName, 'TV', 1)
           .then((torrents) => {
             var magnetLink = torrents[0] ? torrents[0].magnet : ''

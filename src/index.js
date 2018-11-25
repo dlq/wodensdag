@@ -2,6 +2,8 @@ const { shell } = require('electron')
 const ipc = require('electron').ipcRenderer
 const jquery = require('jquery')
 var moment = require('moment')
+const Store = require('electron-store')
+const store = new Store()
 
 function getFav (f) {
   return localStorage.getItem(f.show.id)
@@ -19,23 +21,32 @@ function getSchedule (date, callback) {
   const baseURL = 'https://api.tvmaze.com'
   const dateStr = moment(date).format('YYYY-MM-DD')
 
-  // TODO: Should countries be in the settings?
-  jquery.when(
-    jquery.getJSON(`${baseURL}/schedule?country=AU&date=${dateStr}`),
-    jquery.getJSON(`${baseURL}/schedule?country=CA&date=${dateStr}`),
-    jquery.getJSON(`${baseURL}/schedule?country=GB&date=${dateStr}`),
-    jquery.getJSON(`${baseURL}/schedule?country=US&date=${dateStr}`)
-  )
-    .then((r1, r2, r3, r4) => {
-      callback(
-        [].concat(r1[0], r2[0], r3[0], r4[0])
-          .sort((a, b) => {
-            return compareFav(a, b) || // favourites first
-            b.show.weight - a.show.weight || // weight, descending
-            a.show.name.localeCompare(b.show.name) || // show name, ascending
-            a.number - b.number // episode, ascending
-          })
-      )
+  const promises = store.get('countries', ['US'])
+    .map(x => jquery.getJSON(`${baseURL}/schedule?country=${x}&date=${dateStr}`))
+  jquery.when(...promises)
+    .then((...results) => {
+      // TODO: Refactor this.
+      if (results[1] === 'success') {
+        callback(
+          results[0]
+            .sort((a, b) => {
+              return compareFav(a, b) || // favourites first
+              b.show.weight - a.show.weight || // weight, descending
+              a.show.name.localeCompare(b.show.name) || // show name, ascending
+              a.number - b.number // episode, ascending
+            })
+        )
+      } else {
+        callback(
+          [].concat(...results.map(x => x[0]))
+            .sort((a, b) => {
+              return compareFav(a, b) || // favourites first
+              b.show.weight - a.show.weight || // weight, descending
+              a.show.name.localeCompare(b.show.name) || // show name, ascending
+              a.number - b.number // episode, ascending
+            })
+        )
+      }
     })
 }
 
@@ -43,7 +54,7 @@ function getShow (name, callback) {
   const torrentSearch = require('torrent-search-api')
   // TODO: Should there be settings for search providers?
   torrentSearch.enableProvider('Rarbg')
-  torrentSearch.search(name, 'TV', 1)
+  torrentSearch.search(name, 'TV', 10)
     .then((torrents) => { callback(torrents[0] ? torrents[0].magnet : '') })
     .catch((e) => { console.error(e) })
 }
@@ -56,12 +67,10 @@ function getSeasonEpisodeString (s) {
   }
 }
 
-// TODO: Should the resolution be a preference?
-const resolution = '720p'
-
 function setContent (date) {
   // add info and actions to navbar
   jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
+  document.title = moment(date).format('dddd, MMMM D, YYYY')
   jquery('#date-previous').off('click').one('click', () => {
     setContent(moment(date).subtract(1, 'days').toDate())
   })
@@ -73,7 +82,7 @@ function setContent (date) {
     newSearchWindow()
   })
 
-  // add the correct listeners for right and left arrow keystrokes
+  // add the correct listeners for right and left arrow
   ipc.removeAllListeners('right')
   ipc.once('right', () => { setContent(moment(date).add(1, 'days').toDate()) })
   ipc.removeAllListeners('left')
@@ -120,7 +129,7 @@ function setContent (date) {
 
       // add magnet button action
       showCardClone.find('#show-download-link').click(() => {
-        const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${resolution}`
+        const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${store.get('resolution', '720p')}`
         getShow(searchName, (magnetLink) => {
           if (!magnetLink) {
             shell.openExternal(`http://rarbg.to/torrents.php?search=${searchName}`, { activate: false })
