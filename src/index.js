@@ -27,6 +27,7 @@ function getSchedule (date, callback) {
     .then((...results) => {
       // TODO: Refactor this.
       if (results[1] === 'success') {
+        // If there's just one result returned for some reason it's not an array of an array, just an array.
         callback(
           results[0]
             .sort((a, b) => {
@@ -48,11 +49,13 @@ function getSchedule (date, callback) {
         )
       }
     })
+  // TODO: I'm not handling if the promise returns nothing.
 }
 
 function getShow (name, callback) {
   const torrentSearch = require('torrent-search-api')
   // TODO: Should there be settings for search providers?
+  // Rarbg seems to be the only one working with this package.
   torrentSearch.enableProvider('Rarbg')
   torrentSearch.search(name, 'TV', 10)
     .then((torrents) => { callback(torrents[0] ? torrents[0].magnet : '') })
@@ -68,25 +71,32 @@ function getSeasonEpisodeString (s) {
 }
 
 function setContent (date) {
+
   // add info and actions to navbar
   jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   document.title = moment(date).format('dddd, MMMM D, YYYY')
   jquery('#date-previous').off('click').one('click', () => {
     setContent(moment(date).subtract(1, 'days').toDate())
   })
-  // TODO: Should the next button be disabled when it's today?
-  jquery('#date-next').off('click').one('click', () => {
-    setContent(moment(date).add(1, 'days').toDate())
-  })
+  if (!moment(date).isSame(moment(), 'day')) {
+    jquery('#date-next').attr('disabled', false)
+    jquery('#date-next').off('click').one('click', () => {
+      setContent(moment(date).add(1, 'days').toDate())
+    })
+  } else {
+    jquery('#date-next').attr('disabled', true)
+  }
   jquery('#search').off('click').on('click', () => {
     newSearchWindow()
   })
 
-  // add the correct listeners for right and left arrow
-  ipc.removeAllListeners('right')
-  ipc.once('right', () => { setContent(moment(date).add(1, 'days').toDate()) })
+  // add the correct listeners for left and right arrow
   ipc.removeAllListeners('left')
   ipc.once('left', () => { setContent(moment(date).subtract(1, 'days').toDate()) })
+  if (!moment(date).isSame(moment(), 'day')) {
+    ipc.removeAllListeners('right')
+    ipc.once('right', () => { setContent(moment(date).add(1, 'days').toDate()) })
+  }
 
   // start with an empty list
   jquery('#show-list').empty()
