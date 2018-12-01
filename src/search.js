@@ -9,6 +9,7 @@ jquery(document).ready(() => {
     }
   })
   jquery('input').bind('enterKey', (e) => {
+    // TODO: Can I search based on country of origin, etc.?
     const baseURL = 'https://api.tvmaze.com'
     jquery.getJSON(`${baseURL}/search/shows?q=${e.target.value}`, (data) => {
       const resultsSource = jquery('#search-results-template').html()

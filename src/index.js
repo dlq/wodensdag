@@ -71,7 +71,6 @@ function getSeasonEpisodeString (s) {
 }
 
 function setContent (date) {
-
   // add info and actions to navbar
   jquery('#date-now').text(moment(date).format('dddd, MMMM D, YYYY'))
   document.title = moment(date).format('dddd, MMMM D, YYYY')
