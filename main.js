@@ -6,12 +6,11 @@ const store = new Store()
 function checked (country) { return store.get('countries', []).includes(country) }
 
 function check (country) {
-  if (store.get('countries', []).includes(country)) {
-    var countries = store.get('countries', [])
+  var countries = store.get('countries', [])
+  if (countries.includes(country)) {
     countries = store.get('countries').filter(c => c !== country)
     store.set('countries', store.get('countries').filter(c => c !== country))
   } else {
-    var countries = store.get('countries', [])
     countries.push(country)
     store.set('countries', countries)
   }
