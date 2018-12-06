@@ -50,6 +50,9 @@
               <span>{{this}}</span>
             {{/each}}
           </div>
+          <div class="text-secondary">
+            <span>{{runtime}} minutes</span>
+          </div>
           <div class="text-warning">
             {{#if network}}
               <span>{{network.country.code}}</span>
@@ -63,8 +66,8 @@
               <span>{{webChannel.name}}</span> 
             {{/if}}
           </div>
-          <div class="text-secondary">
-            <span>{{runtime}} minutes</span>
+          <div class="text-warning">
+            <a href="https://www.imdb.com/title/{{externals.imdb}}" target="_blank">IMDb</a>
           </div>
         </b>
       </small>

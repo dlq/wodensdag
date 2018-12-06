@@ -17,7 +17,14 @@ handlebars.registerHelper('episode-string', (season, number, airdate) => {
 ipc.on('id', (_, id) => {
   const baseURL = 'https://api.tvmaze.com'
   jquery.getJSON(`${baseURL}/shows/${id}?embed=episodes`, (data) => {
+    // set window title
     document.title = data.name
+
+    // open links in external browser
+    jquery(document).on('click', 'a[href^="https"]', function (event) {
+      event.preventDefault()
+      shell.openExternal(this.href)
+    })
 
     // fill in show details column
     const detailsSource = jquery('#show-details-template').html()
