@@ -16,19 +16,10 @@
   "scripts": {
     "start": "electron --inspect .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --mac --win",
-    "release": "build"
+    "publish": "build --mac --win -p always"
   },
   "build": {
-    "appId": "com.nonaverse.wodensdag",
-    "mac": {
-      "category": "public.app-category.entertainment"
-    },
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ]
+    "appId": "com.nonaverse.wodensdag"
   },
   "devDependencies": {
     "electron": "^2.0.8",

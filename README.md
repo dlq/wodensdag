@@ -35,16 +35,9 @@ $ npm start
 $ npm run pack
 ```
 
-### Build Distribution Files
-
-```
-$ npm run dist
-```
-
 ## TODO
 
 * Notifications
-* Auto-update
 
 ## License
 

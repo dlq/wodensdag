@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu } = require('electron')
 const windowStateKeeper = require('electron-window-state')
 const Store = require('electron-store')
 const store = new Store()
+const { autoUpdater } = require('electron-updater')
 
 function checked (country) { return store.get('countries', []).includes(country) }
 
@@ -103,14 +104,6 @@ const menuTemplate = [
         checked: checked('NZ'),
         click: () => { check('NZ') }
       },
-      /*
-      {
-        label: 'South Africa',
-        type: 'checkbox',
-        checked: checked('ZA'),
-        click: () => { check('ZA') }
-      },
-      */
       { type: 'separator' },
       {
         label: 'Japan',
@@ -136,32 +129,6 @@ const menuTemplate = [
         checked: checked('TH'),
         click: () => { check('TH') }
       },
-      /*
-      {
-        label: 'Singapore',
-        type: 'checkbox',
-        checked: checked('SG'),
-        click: () => { check('SG') }
-      },
-      {
-        label: 'Hong Kong',
-        type: 'checkbox',
-        checked: checked('HK'),
-        click: () => { check('HK') }
-      },
-      {
-        label: 'Taiwan',
-        type: 'checkbox',
-        checked: checked('TW'),
-        click: () => { check('TW') }
-      },
-      {
-        label: 'Philippines',
-        type: 'checkbox',
-        checked: checked('PH'),
-        click: () => { check('PH') }
-      },
-      */
       { type: 'separator' },
       {
         label: 'Russia',
@@ -193,38 +160,6 @@ const menuTemplate = [
         checked: checked('TR'),
         click: () => { check('TR') }
       },
-      /*
-      {
-        label: 'Romania',
-        type: 'checkbox',
-        checked: checked('RO'),
-        click: () => { check('RO') }
-      },
-      {
-        label: 'Czechia',
-        type: 'checkbox',
-        checked: checked('CZ'),
-        click: () => { check('CZ') }
-      },
-      {
-        label: 'Serbia',
-        type: 'checkbox',
-        checked: checked('RS'),
-        click: () => { check('RS') }
-      },
-      {
-        label: 'Kazakhstan',
-        type: 'checkbox',
-        checked: checked('KZ'),
-        click: () => { check('KZ') }
-      },
-      {
-        label: 'Armenia',
-        type: 'checkbox',
-        checked: checked('AM'),
-        click: () => { check('AM') }
-      },
-      */
       { type: 'separator' },
       {
         label: 'France',
@@ -299,46 +234,6 @@ const menuTemplate = [
         checked: checked('FI'),
         click: () => { check('FI') }
       }
-      /*
-      { type: 'separator' },
-      {
-        label: 'Brazil',
-        type: 'checkbox',
-        checked: checked('BR'),
-        click: () => { check('BR') }
-      },
-      {
-        label: 'Mexico',
-        type: 'checkbox',
-        checked: checked('MX'),
-        click: () => { check('MX') }
-      },
-      {
-        label: 'Argentina',
-        type: 'checkbox',
-        checked: checked('AR'),
-        click: () => { check('AR') }
-      },
-      {
-        label: 'Chile',
-        type: 'checkbox',
-        checked: checked('CL'),
-        click: () => { check('CL') }
-      },
-      { type: 'separator' },
-      {
-        label: 'India',
-        type: 'checkbox',
-        checked: checked('IN'),
-        click: () => { check('IN') }
-      },
-      {
-        label: 'Israel',
-        type: 'checkbox',
-        checked: checked('IL'),
-        click: () => { check('IL') }
-      },
-      */
     ]
   },
   {
@@ -457,6 +352,8 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
   if (mainWindow === null) {
+    // TODO: Does this auto-updater call work?
+    autoUpdater.checkForUpdatesAndNotify()
     createWindow()
   }
 })
