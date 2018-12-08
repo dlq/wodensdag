@@ -21,27 +21,18 @@ const menuTemplate = [
   {
     label: 'Edit',
     submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
+      { role: 'undo' }, { role: 'redo' },
       { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      { role: 'pasteandmatchstyle' },
-      { role: 'delete' },
-      { role: 'selectall' }
+      { role: 'cut' }, { role: 'copy' }, { role: 'paste' }, { role: 'pasteandmatchstyle' },
+      { role: 'delete' }, { role: 'selectall' }
     ]
   },
   {
     label: 'View',
     submenu: [
-      { role: 'reload' },
-      { role: 'forcereload' },
-      { role: 'toggledevtools' },
+      { role: 'reload' }, { role: 'forcereload' }, { role: 'toggledevtools' },
       { type: 'separator' },
-      { role: 'resetzoom' },
-      { role: 'zoomin' },
-      { role: 'zoomout' },
+      { role: 'resetzoom' }, { role: 'zoomin' }, { role: 'zoomout' },
       { type: 'separator' },
       { role: 'togglefullscreen' }
     ]
@@ -68,200 +59,52 @@ const menuTemplate = [
         click: () => { store.set('resolution', '2160p') }
       },
       { type: 'separator' },
-      {
-        label: 'United States',
-        type: 'checkbox',
-        checked: checked('US'),
-        click: () => { check('US') }
-      },
-      {
-        label: 'United Kingdom',
-        type: 'checkbox',
-        checked: checked('GB'),
-        click: () => { check('GB') }
-      },
-      {
-        label: 'Canada',
-        type: 'checkbox',
-        checked: checked('CA'),
-        click: () => { check('CA') }
-      },
-      {
-        label: 'Australia',
-        type: 'checkbox',
-        checked: checked('AU'),
-        click: () => { check('AU') }
-      },
-      {
-        label: 'Ireland',
-        type: 'checkbox',
-        checked: checked('IE'),
-        click: () => { check('IE') }
-      },
-      {
-        label: 'New Zealand',
-        type: 'checkbox',
-        checked: checked('NZ'),
-        click: () => { check('NZ') }
-      },
+      { label: 'United States', type: 'checkbox', checked: checked('US'), click: () => { check('US') } },
+      { label: 'United Kingdom', type: 'checkbox', checked: checked('GB'), click: () => { check('GB') } },
+      { label: 'Canada', type: 'checkbox', checked: checked('CA'), click: () => { check('CA') } },
+      { label: 'Australia', type: 'checkbox', checked: checked('AU'), click: () => { check('AU') } },
+      { label: 'Ireland', type: 'checkbox', checked: checked('IE'), click: () => { check('IE') } },
+      { label: 'New Zealand', type: 'checkbox', checked: checked('NZ'), click: () => { check('NZ') } },
       { type: 'separator' },
-      {
-        label: 'Japan',
-        type: 'checkbox',
-        checked: checked('JP'),
-        click: () => { check('JP') }
-      },
-      {
-        label: 'South Korea',
-        type: 'checkbox',
-        checked: checked('KR'),
-        click: () => { check('KR') }
-      },
-      {
-        label: 'China',
-        type: 'checkbox',
-        checked: checked('CN'),
-        click: () => { check('CN') }
-      },
-      {
-        label: 'Thailand',
-        type: 'checkbox',
-        checked: checked('TH'),
-        click: () => { check('TH') }
-      },
+      { label: 'Japan', type: 'checkbox', checked: checked('JP'), click: () => { check('JP') } },
+      { label: 'South Korea', type: 'checkbox', checked: checked('KR'), click: () => { check('KR') } },
+      { label: 'China', type: 'checkbox', checked: checked('CN'), click: () => { check('CN') } },
+      { label: 'Thailand', type: 'checkbox', checked: checked('TH'), click: () => { check('TH') } },
       { type: 'separator' },
-      {
-        label: 'Russia',
-        type: 'checkbox',
-        checked: checked('RU'),
-        click: () => { check('RU') }
-      },
-      {
-        label: 'Ukraine',
-        type: 'checkbox',
-        checked: checked('UA'),
-        click: () => { check('UA') }
-      },
-      {
-        label: 'Poland',
-        type: 'checkbox',
-        checked: checked('PL'),
-        click: () => { check('PL') }
-      },
-      {
-        label: 'Hungary',
-        type: 'checkbox',
-        checked: checked('HU'),
-        click: () => { check('HU') }
-      },
-      {
-        label: 'Turkey',
-        type: 'checkbox',
-        checked: checked('TR'),
-        click: () => { check('TR') }
-      },
+      { label: 'Russia', type: 'checkbox', checked: checked('RU'), click: () => { check('RU') } },
+      { label: 'Ukraine', type: 'checkbox', checked: checked('UA'), click: () => { check('UA') } },
+      { label: 'Poland', type: 'checkbox', checked: checked('PL'), click: () => { check('PL') } },
+      { label: 'Hungary', type: 'checkbox', checked: checked('HU'), click: () => { check('HU') } },
+      { label: 'Turkey', type: 'checkbox', checked: checked('TR'), click: () => { check('TR') } },
       { type: 'separator' },
-      {
-        label: 'France',
-        type: 'checkbox',
-        checked: checked('FR'),
-        click: () => { check('FR') }
-      },
-      {
-        label: 'Germany',
-        type: 'checkbox',
-        checked: checked('DE'),
-        click: () => { check('DE') }
-      },
-      {
-        label: 'Netherlands',
-        type: 'checkbox',
-        checked: checked('NL'),
-        click: () => { check('NL') }
-      },
-      {
-        label: 'Belgium',
-        type: 'checkbox',
-        checked: checked('BE'),
-        click: () => { check('BE') }
-      },
-      {
-        label: 'Italy',
-        type: 'checkbox',
-        checked: checked('IT'),
-        click: () => { check('IT') }
-      },
-      {
-        label: 'Spain',
-        type: 'checkbox',
-        checked: checked('ES'),
-        click: () => { check('ES') }
-      },
-      {
-        label: 'Portugal',
-        type: 'checkbox',
-        checked: checked('PT'),
-        click: () => { check('PT') }
-      },
-      {
-        label: 'Austria',
-        type: 'checkbox',
-        checked: checked('AT'),
-        click: () => { check('AT') }
-      },
+      { label: 'France', type: 'checkbox', checked: checked('FR'), click: () => { check('FR') } },
+      { label: 'Germany', type: 'checkbox', checked: checked('DE'), click: () => { check('DE') } },
+      { label: 'Netherlands', type: 'checkbox', checked: checked('NL'), click: () => { check('NL') } },
+      { label: 'Belgium', type: 'checkbox', checked: checked('BE'), click: () => { check('BE') } },
+      { label: 'Italy', type: 'checkbox', checked: checked('IT'), click: () => { check('IT') } },
+      { label: 'Spain', type: 'checkbox', checked: checked('ES'), click: () => { check('ES') } },
+      { label: 'Portugal', type: 'checkbox', checked: checked('PT'), click: () => { check('PT') } },
+      { label: 'Austria', type: 'checkbox', checked: checked('AT'), click: () => { check('AT') } },
       { type: 'separator' },
-      {
-        label: 'Sweden',
-        type: 'checkbox',
-        checked: checked('SE'),
-        click: () => { check('SE') }
-      },
-      {
-        label: 'Norway',
-        type: 'checkbox',
-        checked: checked('NO'),
-        click: () => { check('NO') }
-      },
-      {
-        label: 'Denmark',
-        type: 'checkbox',
-        checked: checked('DK'),
-        click: () => { check('DK') }
-      },
-      {
-        label: 'Finland',
-        type: 'checkbox',
-        checked: checked('FI'),
-        click: () => { check('FI') }
-      }
+      { label: 'Sweden', type: 'checkbox', checked: checked('SE'), click: () => { check('SE') } },
+      { label: 'Norway', type: 'checkbox', checked: checked('NO'), click: () => { check('NO') } },
+      { label: 'Denmark', type: 'checkbox', checked: checked('DK'), click: () => { check('DK') } },
+      { label: 'Finland', type: 'checkbox', checked: checked('FI'), click: () => { check('FI') } }
     ]
   },
   {
     label: 'Go',
     submenu: [
-      {
-        label: 'Next',
-        accelerator: 'CmdOrCtrl+Right',
-        click: () => { mainWindow.webContents.send('right') }
-      },
-      {
-        label: 'Previous',
-        accelerator: 'CmdOrCtrl+Left',
-        click: () => { mainWindow.webContents.send('left') }
-      },
+      { label: 'Next', accelerator: 'CmdOrCtrl+Right', click: () => { mainWindow.webContents.send('right') } },
+      { label: 'Previous', accelerator: 'CmdOrCtrl+Left', click: () => { mainWindow.webContents.send('left') } },
       { type: 'separator' },
-      {
-        label: 'Search',
-        accelerator: 'CmdOrCtrl+S',
-        click: () => { mainWindow.webContents.send('search') }
-      }
+      { label: 'Search', accelerator: 'CmdOrCtrl+S', click: () => { mainWindow.webContents.send('search') } }
     ]
   },
   {
     role: 'window',
     submenu: [
-      { role: 'minimize' },
-      { role: 'close' }
+      { role: 'minimize' }, { role: 'close' }
     ]
   },
   {
@@ -292,9 +135,7 @@ if (process.platform === 'darwin') {
       { type: 'separator' },
       { role: 'services', submenu: [] },
       { type: 'separator' },
-      { role: 'hide' },
-      { role: 'hideothers' },
-      { role: 'unhide' },
+      { role: 'hide' }, { role: 'hideothers' }, { role: 'unhide' },
       { type: 'separator' },
       { role: 'quit' }
     ]
@@ -305,16 +146,13 @@ if (process.platform === 'darwin') {
     {
       label: 'Speech',
       submenu: [
-        { role: 'startspeaking' },
-        { role: 'stopspeaking' }
+        { role: 'startspeaking' }, { role: 'stopspeaking' }
       ]
     }
   )
   // add to Window menu
   menuTemplate[5].submenu = [
-    { role: 'close' },
-    { role: 'minimize' },
-    { role: 'zoom' },
+    { role: 'close' }, { role: 'minimize' }, { role: 'zoom' },
     { type: 'separator' },
     { role: 'front' }
   ]
@@ -340,6 +178,9 @@ function createWindow () {
   mainWindowState.manage(mainWindow)
   mainWindow.loadFile('src/index.html')
   mainWindow.on('closed', () => { mainWindow = null })
+
+  // TODO: Does this auto-updater call work?
+  autoUpdater.checkForUpdatesAndNotify()
 }
 
 app.on('ready', createWindow)
@@ -352,8 +193,6 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
   if (mainWindow === null) {
-    // TODO: Does this auto-updater call work?
-    autoUpdater.checkForUpdatesAndNotify()
     createWindow()
   }
 })

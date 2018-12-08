@@ -67,7 +67,11 @@
             {{/if}}
           </div>
           <div class="text-warning">
-            <a href="https://www.imdb.com/title/{{externals.imdb}}" target="_blank">IMDb</a>
+            {{#if externals.imdb}}
+              <a href="https://www.imdb.com/title/{{externals.imdb}}" target="_blank">IMDb</a>
+            {{else}}
+              <a href="https://www.imdb.com/find?q={{name}}" target="_blank">IMDb</a>
+            {{/if}}
           </div>
         </b>
       </small>
