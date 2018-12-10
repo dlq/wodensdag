@@ -161,6 +161,9 @@ if (process.platform === 'darwin') {
 let mainWindow
 
 function createWindow () {
+  // TODO: Does this auto-updater call work?
+  autoUpdater.checkForUpdatesAndNotify()
+
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate))
 
   let mainWindowState = windowStateKeeper({
@@ -178,9 +181,6 @@ function createWindow () {
   mainWindowState.manage(mainWindow)
   mainWindow.loadFile('src/index.html')
   mainWindow.on('closed', () => { mainWindow = null })
-
-  // TODO: Does this auto-updater call work?
-  autoUpdater.checkForUpdatesAndNotify()
 }
 
 app.on('ready', createWindow)
