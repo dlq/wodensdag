@@ -20,6 +20,10 @@
     }
     img {
       width: 150px !important;
+      filter: none;
+    }
+    img:hover {
+      filter: brightness(80%) grayscale(50%);
     }
   </style>
 </head>
@@ -51,7 +55,8 @@
 
   <template id="show-card">
     <div class="card text-white bg-dark border-secondary m-3">
-      <img id="show-img" class="card-img-top rounded mt-4 ml-4" height="210">
+      <!-- TODO: Overlay the series name somehow. -->
+      <img id="show-img" class="card-img-top rounded mt-4 ml-4">
       <div class="card-body">
         <div id="episode-head" class="card-text">
           <small><span class="text-warning" id="episode"></span></small>
