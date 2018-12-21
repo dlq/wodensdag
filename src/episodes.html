@@ -13,6 +13,16 @@
     tr #episode-string {
       width: 8rem;
     }
+    a:link {
+      color: #FFFFEE;
+    }
+    img {
+      width: 210px !important;
+      filter: none;
+    }
+    img:hover {
+      filter: brightness(80%) grayscale(50%);
+    }
   </style>
 </head>
 
@@ -38,7 +48,12 @@
   <!-- TODO: Should I go back to index.html and refactor it to use this templating? -->
 
   <script id="show-details-template" type="text/x-handlebars-template">
-    <img class="rounded" src="{{image.medium}}" title="{{name}}" width="210" height="295">
+    {{#if externals.imdb}}
+      <a href="https://www.imdb.com/title/{{externals.imdb}}" target="_blank">
+    {{else}}
+      <a href="https://www.imdb.com/find?q={{name}}" target="_blank">
+    {{/if}}
+    <img class="rounded" src="{{image.medium}}" title="{{name}}"></a>
     <div class="mt-2" style="width: 210px;">
       <div hidden id="show-name">{{name}}</div><!-- this is a hack to embed the current show name -->
       <small>
@@ -49,9 +64,6 @@
               &middot;
               <span>{{this}}</span>
             {{/each}}
-          </div>
-          <div class="text-secondary">
-            <span>{{runtime}} minutes</span>
           </div>
           <div class="text-warning">
             {{#if network}}
@@ -66,12 +78,8 @@
               <span>{{webChannel.name}}</span> 
             {{/if}}
           </div>
-          <div class="text-warning">
-            {{#if externals.imdb}}
-              <a href="https://www.imdb.com/title/{{externals.imdb}}" target="_blank">IMDb</a>
-            {{else}}
-              <a href="https://www.imdb.com/find?q={{name}}" target="_blank">IMDb</a>
-            {{/if}}
+          <div class="text-secondary">
+            <span>{{runtime}} minutes</span>
           </div>
         </b>
       </small>

@@ -1,7 +1,9 @@
+const { shell } = require('electron')
 const jquery = require('jquery')
 const handlebars = require('handlebars')
 
 jquery(document).ready(() => {
+  // handle the input search field
   jquery('input').focus()
   jquery('input').keyup((e) => {
     if (e.keyCode === 13) {
@@ -9,6 +11,7 @@ jquery(document).ready(() => {
     }
   })
   jquery('input').bind('enterKey', (e) => {
+    // search and populate results
     // TODO: Can I search based on country of origin, etc.?
     const baseURL = 'https://api.tvmaze.com'
     jquery.getJSON(`${baseURL}/search/shows?q=${e.target.value}`, (data) => {
@@ -32,5 +35,11 @@ jquery(document).ready(() => {
       })
     })
     // TODO: Deal with failure.
+  })
+
+  // open links in external browser
+  jquery(document).on('click', 'a[href^="https"]', function (event) {
+    event.preventDefault()
+    shell.openExternal(this.href)
   })
 })

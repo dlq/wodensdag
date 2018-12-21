@@ -13,6 +13,19 @@
     nav {
       -webkit-app-region: drag;
     }
+    a:link {
+      color: #FFFFEE;
+    }
+    #img {
+      width: 150px;
+    }
+    img {
+      width: 150px !important;
+      filter: none;
+    }
+    img:hover {
+      filter: brightness(80%) grayscale(50%);
+    }
   </style>
   <title>Search</title>
 </head>
@@ -35,7 +48,14 @@
   <script id="search-results-template" type="text/x-handlebars-template">
     {{#each this}}
       <div id="search-results-details" class="media">
-        <img class="rounded" src="{{show.image.medium}}" title="{{show.name}}" width=140>
+        <div id="img">
+        {{#if show.externals.imdb}}
+          <a href="https://www.imdb.com/title/{{show.externals.imdb}}" target="_blank">
+        {{else}}
+          <a href="https://www.imdb.com/find?q={{show.name}}" target="_blank">
+        {{/if}}
+        <img class="rounded" src="{{show.image.medium}}" title="{{show.name}}"></a>
+        </div>
         <div class="media-body ml-4">
           <h5>{{show.name}}</h5>
           <div hidden id="show-id">{{show.id}}</div>

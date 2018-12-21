@@ -102,14 +102,19 @@ function setContent (date) {
 
   getSchedule(date, (schedule) => {
     schedule.forEach((s) => {
-      // if (!s.show.image) { return } // skip if there's no img
-
       var showCardClone = jquery('template#show-card').contents().clone() // new card
 
       // add img src
       showCardClone.find('#show-img')
         .attr('src', s.show.image ? s.show.image.medium : '')
         .attr('title', s.show.name)
+        .click(e => {
+          if (s.show.externals.imdb) {
+            shell.openExternal(`http://www.imdb.com/title/${s.show.externals.imdb}`, { activate: false })
+          } else {
+            shell.openExternal(`http://www.imdb.com/find?q=${s.show.name}`, { activate: false })
+          }
+        })
 
       // add show and episode names
       showCardClone.find('#episode').text(getSeasonEpisodeString(s))
