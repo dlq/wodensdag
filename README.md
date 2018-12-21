@@ -2,7 +2,13 @@
 
 > Yesterday's TV
 
-## Dev
+
+## Usage
+
+[Download and install the latest release](https://github.com/dlq/wodensdag/releases/latest).  Enjoy.
+
+
+## Development
 
 ### Setup
 
@@ -35,9 +41,11 @@ $ npm start
 $ npm run pack
 ```
 
+
 ## TODO
 
 * Notifications
+
 
 ## License
 
