@@ -143,7 +143,7 @@ function setContent (date) {
 
       // add magnet button action
       showCardClone.find('#show-download-link').click(() => {
-        const searchName = `${s.show.name.replace(/[^ \w]/g, '')} ${getSeasonEpisodeString(s)} ${store.get('resolution', '720p')}`
+        const searchName = `${s.show.name.replace(/'/, '').replace(/[^ \w]/g, ' ')} ${getSeasonEpisodeString(s)} ${store.get('resolution', '720p')}`
         getShow(searchName, (magnetLink) => {
           if (!magnetLink) {
             shell.openExternal(`http://rarbg.to/torrents.php?search=${searchName}`, { activate: false })
