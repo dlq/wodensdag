@@ -34,7 +34,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
     "bootstrap": "^4.3.1",
-    "electron-store": "^2.0.0",
+    "electron-store": "^3.2.0",
     "electron-updater": "^4.0.6",
     "electron-window-state": "^5.0.3",
     "handlebars": "^4.1.2",
