@@ -32,7 +32,7 @@
     "eslint-plugin-standard": "^4.0.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.3.1",
+    "@fortawesome/fontawesome-free": "^5.8.2",
     "bootstrap": "^4.3.1",
     "electron-store": "^2.0.0",
     "electron-updater": "^4.0.6",
