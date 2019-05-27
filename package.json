@@ -41,6 +41,6 @@
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "popper.js": "^1.15.0",
-    "torrent-search-api": "^2.0.8"
+    "torrent-search-api": "^2.0.9"
   }
 }
