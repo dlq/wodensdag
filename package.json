@@ -22,7 +22,7 @@
     "appId": "com.nonaverse.wodensdag"
   },
   "devDependencies": {
-    "electron": "^7.2.4",
+    "electron": "^9.4.0",
     "electron-builder": "^20.40.2",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
